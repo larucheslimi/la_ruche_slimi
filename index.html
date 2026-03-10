@@ -99,26 +99,14 @@
         .category-title span { background-color: var(--dark-grey); padding: 0 20px; position: relative; z-index: 1; }
         .category-title::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #333; z-index: 0; }
 
-        /* Training Section - Updated for Arabic */
+        /* Training Section */
         #formation { background-color: var(--black); }
-        .training-intro { 
-            max-width: 900px; 
-            margin: 0 auto 60px auto; 
-            text-align: center; 
-            font-size: 18px; 
-            line-height: 1.8; 
-            color: #ddd; 
-        }
-        /* Style for Arabic text specifically */
-        .arabic-text {
-            direction: rtl; /* Right to Left */
-            text-align: right;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fallback */
-        }
+        .training-intro { max-width: 900px; margin: 0 auto 60px auto; text-align: center; font-size: 18px; line-height: 1.8; color: #ddd; }
+        .arabic-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
         .training-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 60px; }
         .training-block { background-color: rgba(255,255,255,0.03); padding: 30px; border-left: 3px solid var(--gold); }
-        .training-block.arabic-block { border-left: none; border-right: 3px solid var(--gold); } /* Border on right for Arabic */
+        .training-block.arabic-block { border-left: none; border-right: 3px solid var(--gold); }
         
         .training-block h3 { color: var(--gold); margin-top: 0; font-family: Georgia, serif; font-size: 24px; }
         .training-block ul { list-style: none; padding: 0; }
@@ -137,10 +125,11 @@
         .btn-submit { width: 100%; padding: 15px; background-color: var(--gold); color: var(--black); border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .btn-submit:hover { background-color: var(--white); }
 
-        /* Certificates - IMAGE ONLY CAROUSEL */
+        /* Certificates - CAROUSEL WITH ARROWS */
         #certificats { background-color: var(--dark-grey); text-align: center; padding: 80px 0; }
         
-        .cert-carousel-container { position: relative; width: 100%; margin-top: 40px; }
+        .cert-carousel-container { position: relative; width: 100%; margin-top: 40px; overflow: hidden; }
+        
         .cert-carousel {
             display: flex;
             overflow-x: auto;
@@ -149,14 +138,14 @@
             gap: 20px;
             padding: 20px 5%;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
         }
-        .cert-carousel::-webkit-scrollbar { height: 0px; }
+        .cert-carousel::-webkit-scrollbar { display: none; }
 
-        /* Image only style */
         .cert-img-slide {
             flex: 0 0 auto;
-            width: 300px; /* Fixed width */
-            height: 200px; /* Fixed height */
+            width: 300px; 
+            height: 200px; 
             object-fit: cover;
             border: 2px solid var(--gold);
             scroll-snap-align: center;
@@ -164,6 +153,30 @@
             cursor: pointer;
         }
         .cert-img-slide:hover { transform: scale(1.05); border-color: #fff; }
+
+        /* Carousel Arrows */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 15px 10px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+        .carousel-btn:hover { background-color: var(--gold); color: var(--black); }
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
+
+        /* Hide arrows on Mobile */
+        @media (max-width: 768px) {
+            .carousel-btn { display: none; }
+            .cert-img-slide { width: 260px; height: 180px; }
+        }
 
         /* Contact Section */
         #contact { background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); padding: 120px 20px; text-align: center; border-top: 1px solid #222; }
@@ -220,7 +233,6 @@
             .contact-luxury-title { font-size: 32px; }
             header { padding: 15px 20px; }
             .hero h1 { font-size: 50px; }
-            .cert-img-slide { width: 260px; height: 180px; }
         }
     </style>
 </head>
@@ -536,20 +548,18 @@
             </div>
         </section>
 
-        <!-- Training Section - UPDATED -->
+        <!-- Training Section -->
         <section id="formation">
             <div class="section-header">
                 <h2>Formation & Consultations</h2>
                 <div class="line"></div>
             </div>
             
-            <!-- Arabic Intro Text -->
             <div class="training-intro arabic-text" style="font-size: 16px; color: #ccc; margin-bottom: 40px;">
                 <p>تفتخر "مؤسسة سليمي لتربية النحل" بنقل حرفة تربية النحل إلى جيل جديد، من خلال مشاركتنا في برامج التكوين المهني و التمهين بالجزائر، كما تعتبر مؤسسة مدرسة تربية النحل بإمتياز. نحن فخورون أيضًا بتكوين لأكثر من 1500 مربي نحل عبر القطر الجزائري، هذا العمل الذي يساعد في الحفاظ على المهارات وأساليب تربية النحل و نقلها إلى محبي و محترفي تربية النحل.</p>
             </div>
 
             <div class="training-content">
-                <!-- Option 1: Trainee Training -->
                 <div class="training-block arabic-block">
                     <h3 class="arabic-text" style="text-align: right; color: var(--gold);">تكوين المتربصين</h3>
                     <div class="arabic-text" style="text-align: right;">
@@ -559,7 +569,6 @@
                     </div>
                 </div>
                 
-                <!-- Option 2: Consultations -->
                 <div class="training-block arabic-block">
                     <h3 class="arabic-text" style="text-align: right; color: var(--gold);">الاستشارات</h3>
                     <div class="arabic-text" style="text-align: right;">
@@ -570,7 +579,7 @@
                 </div>
             </div>
 
-            <!-- Contact Form for Formation -->
+            <!-- Contact Form for Formation - UPDATED -->
             <div class="consultation-section">
                 <div class="consultation-grid">
                     <div class="info-box">
@@ -580,17 +589,27 @@
                     </div>
                     <div class="form-box">
                         <h4 style="color:white; margin-top:0;">Demande d'Inscription</h4>
-                        <form>
-                            <div class="form-row"><label>Nom</label><input type="text"></div>
-                            <div class="form-row"><label>Email</label><input type="email"></div>
-                            <button type="button" class="btn-submit">Envoyer</button>
+                        <form id="formationForm">
+                            <div class="form-row"><label>Nom et Prénom</label><input type="text" id="f-name" placeholder="Votre nom" required></div>
+                            <div class="form-row"><label>Email</label><input type="email" id="f-email" placeholder="Votre email"></div>
+                            <div class="form-row"><label>Numéro de Téléphone</label><input type="tel" id="f-phone" placeholder="Votre numéro" required></div>
+                            <div class="form-row">
+                                <label>Catégorie</label>
+                                <select id="f-category" required>
+                                    <option value="" disabled selected>Choisir une option</option>
+                                    <option value="Consultation Technique">Consultation Technique</option>
+                                    <option value="Formation Pour Debutant">Formation Pour Debutant</option>
+                                    <option value="Formation Pour Les Professionales">Formation Pour Les Professionales</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-submit" onclick="sendFormationWhatsApp()">Envoyer</button>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Certificates - IMAGE ONLY CAROUSEL -->
+        <!-- Certificates - WITH ARROWS -->
         <section id="certificats">
             <div class="section-header">
                 <h2>Certifications</h2>
@@ -598,16 +617,31 @@
             </div>
             
             <div class="cert-carousel-container">
+                <!-- Arrows -->
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">&lt;</button>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">&gt;</button>
+                
                 <div class="cert-carousel" id="cert-list">
                     
                     <!-- ====================================================== -->
                     <!-- CAUTION: ADD YOUR CERTIFICATE IMAGES HERE (START)      -->
                     <!-- ====================================================== -->
                     
-                    <!-- Just copy the img tag and change the src -->
                     <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-13.webp" class="cert-img-slide" alt="Certificat">
-                    <img src="https://placehold.co/300x200/222/D4AF37?text=Certificat+2" class="cert-img-slide" alt="Certificat">
-                    <img src="https://placehold.co/300x200/222/D4AF37?text=Certificat+3" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-14.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-1.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-2.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-3.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-4.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-5.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-6.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-8.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-9.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-10.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-11.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles-12.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/slimiabeilles7.webp" class="cert-img-slide" alt="Certificat">
+                    <img src="https://larucheslimi.com/wp-content/uploads/2023/12/Plan-de-travail-15.webp" class="cert-img-slide" alt="Certificat">
 
                     <!-- ====================================================== -->
                     <!-- CAUTION: ADD YOUR CERTIFICATE IMAGES HERE (END)        -->
@@ -650,7 +684,6 @@
 
         <div class="dashboard-grid">
             
-            <!-- Add Product Form -->
             <div class="dash-card">
                 <h3>Ajouter un Produit</h3>
                 <form id="product-form">
@@ -711,7 +744,6 @@
                 <div id="admin-product-list"></div>
             </div>
 
-            <!-- Certificate Upload - IMAGE ONLY -->
             <div class="dash-card">
                 <h3>Ajouter un Certificat (Image Seulement)</h3>
                 <form id="cert-form">
@@ -755,6 +787,24 @@
             alert(`${name} a été ajouté au panier !`);
         }
 
+        // --- NEW: Formation WhatsApp Function ---
+        function sendFormationWhatsApp() {
+            const name = document.getElementById('f-name').value;
+            const email = document.getElementById('f-email').value;
+            const phone = document.getElementById('f-phone').value;
+            const category = document.getElementById('f-category').value;
+
+            if(!name || !phone || !category) {
+                alert("Veuillez remplir tous les champs obligatoires.");
+                return;
+            }
+
+            const text = `*Nouvelle Demande d'Inscription:*\n\n*Nom:* ${name}\n*Email:* ${email}\n*Téléphone:* ${phone}\n*Catégorie:* ${category}`;
+            const adminPhone = "213542019359"; 
+            const url = `https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
         // --- 2. TOGGLE FUNCTION FOR ADMIN ---
         function togglePriceInputs() {
             const priceType = document.querySelector('input[name="price_type"]:checked').value;
@@ -783,7 +833,7 @@
         // --- 4. RENDER FUNCTIONS ---
         
         function renderProducts() {
-             // Using manual HTML for products in this version as requested
+             // Using manual HTML for products in this version
         }
 
         function renderAdminProductList() {
@@ -811,9 +861,6 @@
             const certs = JSON.parse(localStorage.getItem('certificates')) || [];
             const container = document.getElementById('cert-list');
             
-            // Keep existing manual images if any
-            const existingImages = container.innerHTML;
-
             // Append dynamic images from admin
             certs.forEach(c => {
                 container.innerHTML += `<img src="${c.image}" class="cert-img-slide" alt="Certificat">`;
@@ -848,6 +895,7 @@
             document.getElementById('admin-dashboard').style.display = 'block';
             document.getElementById('main-header').style.display = 'none';
             renderAdminProductList();
+            stopAutoScroll(); // Stop scroll in admin mode if visible
         }
 
         document.getElementById('back-to-site').addEventListener('click', () => {
@@ -895,7 +943,7 @@
             renderAdminProductList(); 
         });
 
-        // Updated for Image Only
+        // Certificate Upload
         document.getElementById('cert-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const imageFile = document.getElementById('c-image').files[0];
@@ -904,7 +952,6 @@
             const imageData = await getBase64(imageFile);
             const certs = JSON.parse(localStorage.getItem('certificates'));
             
-            // Store only image
             certs.push({ id: Date.now(), image: imageData });
             localStorage.setItem('certificates', JSON.stringify(certs));
             
@@ -913,11 +960,66 @@
             renderCertificates();
         });
 
+        // --- 7. CAROUSEL LOGIC (Auto & Arrows) ---
+        
+        let certCarousel = null;
+        let autoScrollInterval = null;
+        let userInteracted = false;
+
+        function initCarousel() {
+            certCarousel = document.getElementById('cert-list');
+            if(!certCarousel) return;
+
+            // Detect user interaction to stop auto-scroll
+            certCarousel.addEventListener('touchstart', () => { userInteracted = true; stopAutoScroll(); });
+            certCarousel.addEventListener('mousedown', () => { userInteracted = true; stopAutoScroll(); });
+            
+            // Start auto scroll only if user hasn't interacted
+            // We use a timeout to ensure page load is complete
+            setTimeout(() => {
+                if(!userInteracted) startAutoScroll();
+            }, 2000);
+        }
+
+        function moveCarousel(direction) {
+            if(!certCarousel) return;
+            const scrollAmount = 320; // Image width + gap
+            certCarousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+            
+            // If user clicks arrow, they are interacting
+            userInteracted = true; 
+            stopAutoScroll();
+        }
+
+        function startAutoScroll() {
+            // Only run on larger screens where arrows are visible or if desired on mobile
+            // The prompt asked for arrows for PC users, auto-swipe for everyone if no interaction
+            if (window.innerWidth < 768 && !userInteracted) {
+                // Auto scroll on mobile logic is the same, but we don't show arrows
+            }
+
+            autoScrollInterval = setInterval(() => {
+                if(!certCarousel) return;
+                
+                // If reached end, go back to start
+                if (certCarousel.scrollWidth - certCarousel.scrollLeft <= certCarousel.clientWidth + 10) {
+                     certCarousel.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                     certCarousel.scrollBy({ left: 320, behavior: 'smooth' });
+                }
+            }, 4000); // Scroll every 4 seconds
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+
         // Init
         window.onload = function() {
             initializeData();
             renderProducts();
             renderCertificates();
+            initCarousel();
         };
     </script>
 </body>
