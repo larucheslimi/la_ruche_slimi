@@ -8,6 +8,7 @@
         /* --- CSS STYLES --- */
         :root {
             --gold: #D4AF37;
+            --gold-light: #f1c40f;
             --black: #0a0a0a;
             --dark-grey: #1a1a1a;
             --white: #ffffff;
@@ -20,41 +21,54 @@
             background-color: var(--black);
             color: var(--white);
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- MODERN ANIMATIONS --- */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         @keyframes pulse {
             0% { text-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
-            50% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+            50% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
             100% { text-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Navigation */
+        /* Navigation (Glassmorphism) */
         header {
-            background-color: rgba(0, 0, 0, 0.98);
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--gold);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: fadeInUp 0.8s ease;
         }
         .logo { font-size: 24px; font-weight: bold; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
         .logo:hover { text-shadow: 0 0 10px var(--gold); }
@@ -64,8 +78,8 @@
             background-color: transparent;
             color: var(--gold) !important;
             border: 1px solid var(--gold);
-            padding: 8px 15px;
-            border-radius: 2px;
+            padding: 10px 20px;
+            border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
@@ -73,15 +87,20 @@
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
-        .cart-btn-header:hover { background-color: var(--gold); color: var(--black) !important; box-shadow: 0 0 15px var(--gold); }
+        .cart-btn-header:hover { 
+            background-color: var(--gold); 
+            color: var(--black) !important; 
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); 
+            transform: translateY(-2px);
+        }
         .cart-badge {
-            background-color: var(--gold);
-            color: var(--black);
+            background-color: var(--black);
+            color: var(--gold);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -89,13 +108,7 @@
             font-weight: bold;
         }
 
-        /* Sections */
-        section { padding: 60px 5%; }
-        .section-header { text-align: center; margin-bottom: 40px; }
-        .section-header h2 { font-size: 32px; color: var(--gold); font-family: Georgia, serif; margin: 0; text-transform: uppercase; }
-        .section-header .line { width: 80px; height: 2px; background-color: var(--gold); margin: 15px auto; }
-
-        /* Hero */
+        /* Hero with Video */
         .hero {
             height: 100vh;
             display: flex;
@@ -103,88 +116,280 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: 
-                linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-                url('HERE ANIMATED VIDEO');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            position: relative;
             border-bottom: 1px solid var(--gold);
             padding: 20px;
+            overflow: hidden;
         }
-        .hero h1 { font-size: 50px; margin: 0; color: var(--gold); font-family: Georgia, serif; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); animation: pulse 4s infinite ease-in-out; }
-        .hero p { font-size: 16px; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 30px 0; animation: fadeInUp 1s ease 0.3s backwards; }
-        .btn { padding: 15px 30px; text-decoration: none; font-weight: 600; text-transform: uppercase; border-radius: 0; transition: all 0.3s ease; font-size: 14px; }
-        .btn-primary { background-color: var(--gold); color: var(--black); border: 2px solid var(--gold); }
-        .btn-primary:hover { background-color: transparent; color: var(--gold); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+
+        /* Video Background Styling */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
         
-        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 1s ease 0.6s backwards; }
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Overlay for video readability */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+            z-index: 0;
+        }
+
+        .hero h1 { 
+            font-size: 60px; 
+            margin: 0; 
+            color: var(--gold); 
+            font-family: Georgia, serif; 
+            text-shadow: 0 0 20px rgba(0,0,0,0.9); 
+            animation: fadeInUp 1s ease-out, pulse 4s infinite ease-in-out 2s; 
+            z-index: 1;
+            position: relative;
+        }
+        .hero p { 
+            font-size: 18px; 
+            color: #ddd; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            margin: 15px 0 40px 0; 
+            animation: fadeInUp 1s ease 0.3s backwards; 
+            z-index: 1;
+            position: relative;
+        }
+        .btn { 
+            padding: 15px 35px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            border-radius: 50px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-size: 14px; 
+            letter-spacing: 1px;
+            z-index: 1;
+            position: relative;
+        }
+        .btn-primary { background-color: var(--gold); color: var(--black); border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); }
+        .btn-primary:hover { 
+            transform: translateY(-5px) scale(1.05); 
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5); 
+        }
+        .btn-secondary { background-color: transparent; color: var(--white); border: 2px solid var(--white); }
+        .btn-secondary:hover { 
+            background-color: var(--white); 
+            color: var(--black); 
+            transform: translateY(-5px); 
+        }
+        
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 1s ease 0.6s backwards; }
+
+        /* Sections */
+        section { padding: 80px 5%; position: relative; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 36px; color: var(--gold); font-family: Georgia, serif; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
+        .section-header .line { width: 60px; height: 3px; background-color: var(--gold); margin: 20px auto 0; transition: width 0.5s; }
+        .section-header:hover .line { width: 120px; }
 
         /* Grid & Products */
         #produits { background-color: var(--dark-grey); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
         
-        /* LUXURY CARD DESIGN */
+        /* MODERN LUXURY CARD DESIGN */
         .card {
             background-color: #000000;
-            border: 1px solid var(--gold);
-            padding: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0;
             text-align: center;
-            transition: 0.4s;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 4px;
         }
+
+        /* Rotating Border Effect Container */
         .card::before {
             content: '';
             position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--gold));
+            z-index: 1;
+            animation: borderRotate 4s linear infinite paused;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+            animation-play-state: running;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            background: #0a0a0a;
+            z-index: 2;
             pointer-events: none;
-            transition: 0.3s;
         }
+
         .card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.2); 
-            border-color: #fff;
+            transform: translateY(-10px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(212, 175, 55, 0.1); 
+            border-color: transparent;
         }
-        .card:hover::before { border-color: var(--gold); }
         
-        .card-img { height: 160px; background-color: #111; margin-bottom: 15px; background-size: cover; background-position: center; background-repeat: no-repeat; transition: transform 0.5s; }
-        .card:hover .card-img { transform: scale(1.05); }
+        .card > * {
+            position: relative;
+            z-index: 3;
+        }
         
-        .card h3 { color: var(--gold); font-size: 16px; margin: 10px 0; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .card-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img { 
+            width: 100%;
+            height: 100%;
+            background-size: cover; 
+            background-position: center; 
+            transition: transform 0.8s ease; 
+        }
+        .card:hover .card-img { transform: scale(1.1); }
+
+        /* Shine effect on hover */
+        .card-img-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .card:hover .card-img-container::after {
+            left: 120%;
+        }
         
-        .card-desc { color: #ccc; font-size: 13px; margin: 0 0 10px 0; min-height: 30px; flex-grow: 1; }
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card h3 { color: var(--white); font-size: 18px; margin: 10px 0; font-weight: 600; letter-spacing: 1px; }
+        
+        .card-desc { color: #999; font-size: 13px; margin: 0 0 15px 0; min-height: 30px; }
 
         /* Price & Buttons */
-        .price-container { margin-top: auto; width: 100%; }
-        .price-selector { width: 100%; padding: 10px; background-color: #111; border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 8px; box-sizing: border-box; transition: 0.3s; }
-        .price-selector:hover { background-color: #000; box-shadow: 0 0 8px rgba(212, 175, 55, 0.3); }
+        .price-container { margin-top: auto; width: 100%; border-top: 1px solid #222; padding-top: 15px; }
+        .price-selector { width: 100%; padding: 10px; background-color: #111; border: 1px solid #333; color: var(--white); font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 8px; box-sizing: border-box; transition: 0.3s; appearance: none; }
+        .price-selector:hover { border-color: var(--gold); }
         .price-selector option { background-color: var(--black); color: var(--white); }
 
-        .price-single { width: 100%; padding: 10px; background-color: #111; border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 16px; margin-top: 8px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+        .price-single { 
+            width: 100%; 
+            padding: 10px; 
+            background: linear-gradient(90deg, #111, #1a1a1a); 
+            border: 1px solid var(--gold); 
+            color: var(--gold); 
+            font-weight: bold; 
+            font-size: 18px; 
+            margin-top: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-sizing: border-box; 
+            letter-spacing: 1px;
+        }
 
-        .btn-actions { display: flex; gap: 8px; margin-top: 12px; width: 100%; }
-        .btn-buy { flex: 1; background-color: var(--gold); color: var(--black); border: none; padding: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 11px; }
-        .btn-buy:hover { background-color: #fff; letter-spacing: 1px; }
+        .btn-actions { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
+        .btn-buy { 
+            flex: 1; 
+            background-color: var(--gold); 
+            color: var(--black); 
+            border: none; 
+            padding: 12px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            font-size: 11px; 
+            letter-spacing: 1px;
+        }
+        .btn-buy:hover { 
+            filter: brightness(1.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
         
-        .btn-cart { flex: 1; background-color: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 11px; }
-        .btn-cart:hover { background-color: var(--gold); color: #000; }
+        .btn-cart { 
+            flex: 1; 
+            background-color: transparent; 
+            color: var(--white); 
+            border: 1px solid #444; 
+            padding: 12px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            font-size: 11px; 
+        }
+        .btn-cart:hover { 
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
 
         /* --- CHECKOUT MODAL --- */
         .checkout-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.98);
             z-index: 2000;
             display: none;
             justify-content: center;
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .checkout-overlay.show {
+            opacity: 1;
         }
         .checkout-modal {
             background-color: var(--dark-grey);
@@ -196,8 +401,12 @@
             position: relative;
             padding: 30px;
             box-sizing: border-box;
-            animation: fadeInUp 0.5s ease;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
             box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+        }
+        .checkout-overlay.show .checkout-modal {
+            transform: scale(1);
         }
         .checkout-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 10px; }
         .checkout-title { color: var(--gold); font-family: Georgia, serif; font-size: 24px; }
@@ -226,14 +435,14 @@
         .btn-whatsapp-order { width: 100%; padding: 15px; background-color: #25D366; color: white; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
         .btn-whatsapp-order:hover { background-color: #128C7E; transform: scale(1.02); }
 
-        /* --- TRAINING SECTION (RESTORED & FIXED) --- */
+        /* --- TRAINING SECTION --- */
         #formation { background-color: var(--black); }
         .training-intro { max-width: 900px; margin: 0 auto 60px auto; text-align: center; font-size: 18px; line-height: 1.8; color: #ddd; }
         .arabic-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
         .training-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 60px; }
-        .training-block { background-color: rgba(255,255,255,0.03); padding: 30px; border-left: 3px solid var(--gold); transition: 0.3s; }
-        .training-block:hover { transform: translateX(10px); box-shadow: -5px 5px 20px rgba(0,0,0,0.5); }
+        .training-block { background-color: rgba(255,255,255,0.03); padding: 30px; border-left: 3px solid var(--gold); transition: 0.5s; position: relative; overflow: hidden;}
+        .training-block:hover { transform: translateX(10px); box-shadow: -5px 5px 20px rgba(0,0,0,0.5); background-color: rgba(255,255,255,0.05); }
         .training-block.arabic-block { border-left: none; border-right: 3px solid var(--gold); }
         .training-block:hover.arabic-block { transform: translateX(-10px); }
         
@@ -256,7 +465,7 @@
         .btn-submit { width: 100%; padding: 15px; background-color: var(--gold); color: var(--black); border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .btn-submit:hover { background-color: var(--white); letter-spacing: 2px; }
 
-        /* --- CONTACT SECTION (RESTORED & FIXED) --- */
+        /* --- CONTACT SECTION --- */
         #contact { background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); padding: 120px 20px; text-align: center; border-top: 1px solid #222; }
         .contact-luxury-container { max-width: 1000px; margin: 0 auto; }
         .contact-luxury-title { font-family: Georgia, serif; font-size: 48px; color: var(--gold); margin-bottom: 20px; }
@@ -369,13 +578,24 @@
 
     <!-- MAIN WEBSITE -->
     <div id="main-website">
-        <!-- Hero -->
+        <!-- Hero Section with Video -->
         <section id="hero" class="hero">
+            <!-- Video Background -->
+            <div class="video-background">
+                <!-- Using a high quality, royalty free video of honey -->
+                <video autoplay muted loop playsinline id="hero-video">
+                    <source src="https://videos.pexels.com/video-files/5748259/5748259-uhd_2560_1440_25fps.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+            <!-- Overlay to make text readable -->
+            <div class="video-overlay"></div>
+
             <h1>La Ruche Slimi</h1>
             <p>Depuis 1969 • Excellence Apicole</p>
             <div class="hero-buttons">
                 <a href="#produits" class="btn btn-primary">Voir les Produits</a>
-                <a href="#formation" class="btn btn-primary" style="background-color: transparent; color: var(--gold);">S'inscrire</a>
+                <a href="#formation" class="btn btn-secondary">S'inscrire</a>
             </div>
         </section>
 
@@ -389,281 +609,319 @@
             <div id="manual-products-container" class="grid">
                 <!-- Product 1 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/pack-wancheris.jpg');"></div>
-                    <h3>PACK WANCHERISS</h3>
-                    <p class="card-desc">عسل الشوكي المرار.</p>
-                    <div class="price-container"><div class="price-single" data-price="3190">3190 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/pack-wancheris.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>PACK WANCHERISS</h3>
+                        <p class="card-desc">عسل الشوكي المرار.</p>
+                        <div class="price-container"><div class="price-single" data-price="3190">3190 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                  <!-- Product 2 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/IMG20240526234535.jpg');"></div>
-                    <h3>باقةالحيوية</h3>
-                    <p class="card-desc">تميز في الحياة.</p>
-                    <div class="price-container"><div class="price-single" data-price="8900">8900 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/IMG20240526234535.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>باقةالحيوية</h3>
+                        <p class="card-desc">تميز في الحياة.</p>
+                        <div class="price-container"><div class="price-single" data-price="8900">8900 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
         
                 <!-- Product 3 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/chardon-250g-scaled-e1738588341489.jpg');"></div>
-                    <h3>العسل الشوكي المرار</h3>
-                    <p class="card-desc">غني بمضادات الأكسدة.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="1070 DA" data-price="1070">125g - 1070 DA</option>
-                            <option value="1540 DA" data-price="1540">250g - 1540 DA</option>
-                            <option value="2820 DA" data-price="2820">500g - 2820 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/chardon-250g-scaled-e1738588341489.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>العسل الشوكي المرار</h3>
+                        <p class="card-desc">غني بمضادات الأكسدة.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="1070 DA" data-price="1070">125g - 1070 DA</option>
+                                <option value="1540 DA" data-price="1540">250g - 1540 DA</option>
+                                <option value="2820 DA" data-price="2820">500g - 2820 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                  <!-- Product 4 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/06/pollen-125--scaled-e1738589051179.jpg');"></div>
-                    <h3>حبوب اللقاح</h3>
-                    <p class="card-desc">مثالي لزيادة طاقتك.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="700 DA" data-price="700">125g - 700 DA</option>
-                            <option value="1300 DA" data-price="1300">250g - 1300 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/06/pollen-125--scaled-e1738589051179.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>حبوب اللقاح</h3>
+                        <p class="card-desc">مثالي لزيادة طاقتك.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="700 DA" data-price="700">125g - 700 DA</option>
+                                <option value="1300 DA" data-price="1300">250g - 1300 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Product 5 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/MITIDJA1.png');"></div>
-                    <h3>باقة متيجة</h3>
-                    <p class="card-desc">عرض حصري.</p>
-                    <div class="price-container"><div class="price-single" data-price="3190">3190 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/MITIDJA1.png');"></div></div>
+                    <div class="card-content">
+                        <h3>باقة متيجة</h3>
+                        <p class="card-desc">عرض حصري.</p>
+                        <div class="price-container"><div class="price-single" data-price="3190">3190 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product 6 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://delimfg.com/wp-content/uploads/2024/03/The-Ultimate-Guide-to-Royal-Food-Royal-Jelly.jpg.webp');"></div>
-                    <h3>الغذاء الملكي</h3>
-                    <p class="card-desc">غذاء ملكات النحل.</p>
-                    <div class="price-container"><div class="price-single" data-price="2950">2950 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://delimfg.com/wp-content/uploads/2024/03/The-Ultimate-Guide-to-Royal-Food-Royal-Jelly.jpg.webp');"></div></div>
+                    <div class="card-content">
+                        <h3>الغذاء الملكي</h3>
+                        <p class="card-desc">غذاء ملكات النحل.</p>
+                        <div class="price-container"><div class="price-single" data-price="2950">2950 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                  <!-- Product 7 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/IMG_20241106_125902.jpg');"></div>
-                    <h3>المحفز</h3>
-                    <p class="card-desc">يجمع بين العسل الطبيعي.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="1200 DA" data-price="1200">250g - 1200 DA</option>
-                            <option value="1800 DA" data-price="1800">500g - 1800 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/IMG_20241106_125902.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>المحفز</h3>
+                        <p class="card-desc">يجمع بين العسل الطبيعي.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="1200 DA" data-price="1200">250g - 1200 DA</option>
+                                <option value="1800 DA" data-price="1800">500g - 1800 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product 8 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_3-1-scaled.jpg');"></div>
-                    <h3>حزمة العائلة</h3>
-                    <p class="card-desc">من أحسن العروض.</p>
-                    <div class="price-container"><div class="price-single" data-price="12500">12500 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_3-1-scaled.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>حزمة العائلة</h3>
+                        <p class="card-desc">من أحسن العروض.</p>
+                        <div class="price-container"><div class="price-single" data-price="12500">12500 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product 9 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_8-1-scaled.jpg');"></div>
-                    <h3>حزمة العسل أطلس</h3>
-                    <p class="card-desc">تجربة ذوق استثنائية.</p>
-                    <div class="price-container"><div class="price-single" data-price="10700">10700 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_8-1-scaled.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>حزمة العسل أطلس</h3>
+                        <p class="card-desc">تجربة ذوق استثنائية.</p>
+                        <div class="price-container"><div class="price-single" data-price="10700">10700 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product 10 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_5-1-scaled.jpg');"></div>
-                    <h3>حزمة عسل الشتاء</h3>
-                    <p class="card-desc">عسل الزعتر والكاليتوس.</p>
-                    <div class="price-container"><div class="price-single" data-price="6600">6600 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_5-1-scaled.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>حزمة عسل الشتاء</h3>
+                        <p class="card-desc">عسل الزعتر والكاليتوس.</p>
+                        <div class="price-container"><div class="price-single" data-price="6600">6600 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product 11 -->
                 <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/multifleurs--scaled-e1738590986105.jpg');"></div>
-                    <h3>عسل متعدد الأزهار</h3>
-                    <p class="card-desc">خلاصة موسمية.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="920 DA" data-price="920">125g - 920 DA</option>
-                            <option value="1520 DA" data-price="1520">250g - 1520 DA</option>
-                            <option value="2760 DA" data-price="2760">500g - 2760 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/multifleurs--scaled-e1738590986105.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل متعدد الأزهار</h3>
+                        <p class="card-desc">خلاصة موسمية.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="920 DA" data-price="920">125g - 920 DA</option>
+                                <option value="1520 DA" data-price="1520">250g - 1520 DA</option>
+                                <option value="2760 DA" data-price="2760">500g - 2760 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 12 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/03/1_13-1-scaled-e1738593933644.jpg');"></div>
-                    <h3>عسل الكاليتوس</h3>
-                    <p class="card-desc">فعّال للسعال.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="990 DA" data-price="990">125g - 990 DA</option>
-                            <option value="1430 DA" data-price="1430">250g - 1430 DA</option>
-                            <option value="2750 DA" data-price="2750">500g - 2750 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/03/1_13-1-scaled-e1738593933644.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل الكاليتوس</h3>
+                        <p class="card-desc">فعّال للسعال.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="990 DA" data-price="990">125g - 990 DA</option>
+                                <option value="1430 DA" data-price="1430">250g - 1430 DA</option>
+                                <option value="2750 DA" data-price="2750">500g - 2750 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 13 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/1000012535-scaled.jpg');"></div>
-                    <h3>عسل اللبينة</h3>
-                    <p class="card-desc">طبيعي 100%.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="1090 DA" data-price="1090">125g - 1090 DA</option>
-                            <option value="1600 DA" data-price="1600">250g - 1600 DA</option>
-                            <option value="2900 DA" data-price="2900">500g - 2900 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/1000012535-scaled.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل اللبينة</h3>
+                        <p class="card-desc">طبيعي 100%.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="1090 DA" data-price="1090">125g - 1090 DA</option>
+                                <option value="1600 DA" data-price="1600">250g - 1600 DA</option>
+                                <option value="2900 DA" data-price="2900">500g - 2900 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 14 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/agrume-scaled-e1738591816770-700x635.jpg');"></div>
-                    <h3>عسل الحمضيات</h3>
-                    <p class="card-desc">بطعم خفيف ومنعش.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="880 DA" data-price="880">125g - 880 DA</option>
-                            <option value="1430 DA" data-price="1430">250g - 1430 DA</option>
-                            <option value="2470 DA" data-price="2470">500g - 2470 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/agrume-scaled-e1738591816770-700x635.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل الحمضيات</h3>
+                        <p class="card-desc">بطعم خفيف ومنعش.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="880 DA" data-price="880">125g - 880 DA</option>
+                                <option value="1430 DA" data-price="1430">250g - 1430 DA</option>
+                                <option value="2470 DA" data-price="2470">500g - 2470 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 15 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/montagne--scaled-e1738591358563.jpg');"></div>
-                    <h3>عسل الجبل البري</h3>
-                    <p class="card-desc">فاخر ونادر.</p>
-                    <div class="price-container">
-                        <select class="price-selector">
-                            <option value="1120 DA" data-price="1120">125g - 1120 DA</option>
-                            <option value="1750 DA" data-price="1750">250g - 1750 DA</option>
-                            <option value="2950 DA" data-price="2950">500g - 2950 DA</option>
-                        </select>
-                    </div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/montagne--scaled-e1738591358563.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل الجبل البري</h3>
+                        <p class="card-desc">فاخر ونادر.</p>
+                        <div class="price-container">
+                            <select class="price-selector">
+                                <option value="1120 DA" data-price="1120">125g - 1120 DA</option>
+                                <option value="1750 DA" data-price="1750">250g - 1750 DA</option>
+                                <option value="2950 DA" data-price="2950">500g - 2950 DA</option>
+                            </select>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNowVariable(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCartVariable(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 16 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/mohafez.png');"></div>
-                    <h3>عسل بالغذاء الملكي</h3>
-                    <p class="card-desc">تحفة طبيعية.</p>
-                    <div class="price-container"><div class="price-single" data-price="7400">7400 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/mohafez.png');"></div></div>
+                    <div class="card-content">
+                        <h3>عسل بالغذاء الملكي</h3>
+                        <p class="card-desc">تحفة طبيعية.</p>
+                        <div class="price-container"><div class="price-single" data-price="7400">7400 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 17 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%A7%D9%84%D8%B9%D9%83%D8%A8%D8%B110-scaled.webp');"></div>
-                    <h3>العكبر</h3>
-                    <p class="card-desc">غني بالعناصر.</p>
-                    <div class="price-container"><div class="price-single" data-price="600">600 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%A7%D9%84%D8%B9%D9%83%D8%A8%D8%B110-scaled.webp');"></div></div>
+                    <div class="card-content">
+                        <h3>العكبر</h3>
+                        <p class="card-desc">غني بالعناصر.</p>
+                        <div class="price-container"><div class="price-single" data-price="600">600 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 18 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/1-1-1-scaled.jpg');"></div>
-                    <h3>كريمة شمع النحل</h3>
-                    <p class="card-desc">ترطيب عميق.</p>
-                    <div class="price-container"><div class="price-single" data-price="600">600 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/1-1-1-scaled.jpg');"></div></div>
+                    <div class="card-content">
+                        <h3>كريمة شمع النحل</h3>
+                        <p class="card-desc">ترطيب عميق.</p>
+                        <div class="price-container"><div class="price-single" data-price="600">600 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
 
                   <!-- Product 19 -->
                   <div class="card reveal">
-                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%B4%D9%85%D8%B9-%D8%A7%D9%84%D9%86%D8%AD%D9%8410-scaled.webp');"></div>
-                    <h3>صابون شمع العسل</h3>
-                    <p class="card-desc">ترطيب وحماية.</p>
-                    <div class="price-container"><div class="price-single" data-price="200">200 DA</div></div>
-                    <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                    <div class="card-img-container"><div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%B4%D9%85%D8%B9-%D8%A7%D9%84%D9%86%D8%AD%D9%8410-scaled.webp');"></div></div>
+                    <div class="card-content">
+                        <h3>صابون شمع العسل</h3>
+                        <p class="card-desc">ترطيب وحماية.</p>
+                        <div class="price-container"><div class="price-single" data-price="200">200 DA</div></div>
+                        <div class="btn-actions">
+                            <button class="btn-buy" onclick="buyNow(this)">Acheter</button>
+                            <button class="btn-cart" onclick="addToCart(this)">Panier</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Training Section (RESTORED EXACTLY) -->
+        <!-- Training Section -->
         <section id="formation">
             <div class="section-header">
                 <h2>Formation & Consultations</h2>
@@ -694,7 +952,6 @@
                 </div>
             </div>
 
-            <!-- Centered Form -->
             <div class="form-section-centered reveal">
                 <h4 style="color:var(--gold); text-align: center; margin-top:0; margin-bottom: 30px; font-size: 24px;">Demande d'Inscription</h4>
                 <form id="formationForm">
@@ -741,13 +998,30 @@
             </div>
         </section>
 
-        <!-- Contact Section (RESTORED EXACTLY) -->
+        <!-- Contact Section -->
         <section id="contact">
             <div class="contact-luxury-container">
                 <h2 class="contact-luxury-title">Contactez-Nous</h2>
                 
-                <!-- Map Box -->
-                <div class="map-box">
+                
+
+                <div class="contact-card-grid" style="margin-top: 40px;">
+                    <div class="contact-card reveal">
+                        <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                        <h4>Téléphone</h4><p>0542019359</p>
+                    </div>
+                    <div class="contact-card reveal">
+                        <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                        <h4>Adresse</h4><p>Tipaza, Douaouda</p>
+                    </div>
+                </div>
+
+                <div class="social-luxury-btns">
+                    <a href="#" class="btn-social-lux"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</a>
+                    <a href="#" class="btn-social-lux"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>TikTok</a>
+                </div>
+            </div>
+            <div class="map-box">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3234.8903202914!2d2.4326824756658364!3d36.59807697240389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128f7765a5555555%3A0x5555555555555555!2sLa%20Ruche%20Slimi!5e0!3m2!1sfr!2sdz!4v1715000000000!5m2!1sfr!2sdz" 
                         width="100%" 
@@ -760,28 +1034,10 @@
                 </div>
                 <div style="margin-top: 15px; text-align: center;">
                     <a href="https://www.google.com/maps/search/?api=1&query=La+Ruche+Slimi+Douaouda+Tipaza" target="_blank" class="btn-directions">
-                        Obtenir l'itinéraire vers notre marché
+                        Obtenir l'itinéraire
                     </a>
                 </div>
 
-                <!-- Contact Cards -->
-                <div class="contact-card-grid" style="margin-top: 40px;">
-                    <div class="contact-card reveal">
-                        <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
-                        <h4>Téléphone</h4><p>0542019359</p>
-                    </div>
-                    <div class="contact-card reveal">
-                        <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
-                        <h4>Adresse</h4><p>Tipaza, Douaouda</p>
-                    </div>
-                </div>
-
-                <!-- Social Buttons -->
-                <div class="social-luxury-btns">
-                    <a href="#" class="btn-social-lux"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</a>
-                    <a href="#" class="btn-social-lux"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>TikTok</a>
-                </div>
-            </div>
         </section>
 
         <footer><p>&copy; 2024 La Ruche Slimi. Tous droits réservés.</p></footer>
@@ -877,12 +1133,20 @@
         // --- CHECKOUT MODAL LOGIC ---
         function openCheckout() {
             renderCartItems();
-            document.getElementById('checkout-overlay').style.display = 'flex';
+            const overlay = document.getElementById('checkout-overlay');
+            overlay.style.display = 'flex';
+            // Trigger reflow
+            void overlay.offsetWidth; 
+            overlay.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
         function closeCheckout() {
-            document.getElementById('checkout-overlay').style.display = 'none';
+            const overlay = document.getElementById('checkout-overlay');
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
             document.body.style.overflow = 'auto';
         }
 
@@ -1040,7 +1304,7 @@
         // Init
         window.onload = () => { 
             renderAdminList(); 
-            reveal(); // Trigger reveal on load
+            reveal(); 
         };
     </script>
 </body>
