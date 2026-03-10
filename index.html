@@ -34,7 +34,7 @@
             top: 0;
             z-index: 1000;
         }
-        .logo { font-size: 26px; font-weight: bold; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+        .logo { font-size: 26px; font-weight: bold; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
         nav ul { list-style: none; display: flex; gap: 30px; padding: 0; margin: 0; align-items: center; }
         nav a { color: var(--white); text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         nav a:hover { color: var(--gold); }
@@ -42,7 +42,7 @@
         .btn-admin:hover { background-color: var(--gold); color: var(--black) !important; }
 
         /* Sections */
-        section { padding: 80px 10%; }
+        section { padding: 80px 5%; } /* Adjusted padding for better mobile fit */
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h2 { font-size: 42px; color: var(--gold); font-family: Georgia, serif; margin: 0; text-transform: uppercase; }
         .section-header .line { width: 100px; height: 2px; background-color: var(--gold); margin: 20px auto; }
@@ -155,10 +155,54 @@
         .btn-submit { width: 100%; padding: 15px; background-color: var(--gold); color: var(--black); border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .btn-submit:hover { background-color: var(--white); }
 
-        /* Certificates */
-        #certificats { background-color: var(--dark-grey); text-align: center; }
-        .cert-box { display: inline-block; background: #fff; color: #000; padding: 40px; margin: 20px; border: 4px solid var(--gold); }
-        .cert-img { width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px; background: #eee; }
+        /* Certificates - CAROUSEL STYLE */
+        #certificats { 
+            background-color: var(--dark-grey); 
+            text-align: center; 
+            padding: 80px 0; /* Removed side padding to allow full width scroll */
+        }
+        
+        .cert-carousel-container {
+            position: relative;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .cert-carousel {
+            display: flex;
+            overflow-x: auto; /* Enables horizontal scroll */
+            scroll-snap-type: x mandatory; /* Snaps to items */
+            scroll-behavior: smooth;
+            gap: 20px;
+            padding: 20px 5%;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .cert-carousel::-webkit-scrollbar {
+            height: 0px; 
+        }
+
+        .cert-box { 
+            flex: 0 0 auto; /* Prevents items from shrinking */
+            width: 280px; /* Fixed width for carousel items */
+            background: #fff; 
+            color: #000; 
+            padding: 30px 20px; 
+            border: 4px solid var(--gold); 
+            scroll-snap-align: center; /* Snaps item to center */
+            transition: transform 0.3s;
+        }
+        .cert-box:hover { transform: scale(1.05); }
+        
+        .cert-img { 
+            width: 120px; 
+            height: 120px; 
+            object-fit: cover; 
+            margin-bottom: 15px; 
+            background: #eee; 
+            border-radius: 50%; /* Optional: makes image round */
+        }
 
         /* Contact Section */
         #contact { background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); padding: 120px 20px; text-align: center; border-top: 1px solid #222; }
@@ -232,6 +276,8 @@
             .contact-luxury-title { font-size: 32px; }
             header { padding: 15px 20px; }
             .hero h1 { font-size: 50px; }
+            /* Mobile adjustments for carousel */
+            .cert-box { width: 260px; }
         }
     </style>
 </head>
@@ -239,12 +285,10 @@
 
     <!-- Navigation -->
     <header id="main-header">
-        <div class="logo">La Ruche Slimi</div>
+        <div class="logo" ondblclick="enterAdminMode()">La Ruche Slimi</div>
         <nav>
             <ul>
-                <li><a href="#hero">Accueil</a></li>
-                <!-- Produits, Formation, and Admin buttons removed from here -->
-                <li><a href="#certificats">Certificats</a></li>
+                <!-- ONLY CONTACT BUTTON KEPT -->
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
@@ -257,7 +301,6 @@
             <h1>La Ruche Slimi</h1>
             <p>Depuis 1969 • Excellence Apicole</p>
             
-            <!-- Updated Buttons -->
             <div class="hero-buttons">
                 <a href="#produits" class="btn btn-primary">Voir les Produits</a>
                 <a href="#formation" class="btn btn-primary" style="background-color: transparent; color: var(--gold);">S'inscrire à la Formation</a>
@@ -271,12 +314,10 @@
                 <div class="line"></div>
             </div>
 
-            <!-- ====================================================== -->
-            <!-- CAUTION: ADD YOUR MANUAL PRODUCTS HERE (START)         -->
-            <!-- ====================================================== -->
+            <!-- MANUAL PRODUCTS -->
             <div id="manual-products-container" class="grid" style="margin-bottom: 50px;">
                 
-                <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 1 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/pack-wancheris.jpg');"></div>
                     <h3>PACK WANCHERISS</h3>
@@ -290,11 +331,11 @@
                     </div>
                 </div>
 
-                 <!-- EXAMPLE 2: DIRECT PRICE PRODUCT -->
+                 <!-- Product 2 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/IMG20240526234535.jpg');"></div>
                     <h3>باقةالحيوية</h3>
-                    <p class="card-desc">هل تبحثون عن التميز في الحياة، و الحفاظ على طاقتكم على أعلى مستوى، الحيوية و الرفاهية الصحية؟ تعال نستكشف هذا العرض الفخم و جربوا هذا العرض الفخم</p>
+                    <p class="card-desc">هل تبحثون عن التميز في الحياة، و الحفاظ على طاقتكم على أعلى مستوى، الحيوية و الرفاهية الصحية؟</p>
                     <div class="price-container">
                         <div class="price-single">8900 DA</div>
                     </div>
@@ -304,12 +345,11 @@
                     </div>
                 </div>
         
-
-                <!-- EXAMPLE 3: VARIABLE PRICE PRODUCT -->
+                <!-- Product 3 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/chardon-250g-scaled-e1738588341489.jpg');"></div>
                     <h3>العسل الشوكي المرار الطبيعي</h3>
-                    <p class="card-desc">العسل الشوكي المرّار الطبيعي 100% ، نادر وغني بمضادات الأكسدة، يدعم صحة الكبد والهضم والمناعة</p>
+                    <p class="card-desc">العسل الشوكي المرّار الطبيعي 100% ، نادر وغني بمضادات الأكسدة.</p>
                     <div class="price-container">
                         <select class="price-selector">
                             <option value="125g - 1070 DA">125g - 1070 DA</option>
@@ -323,11 +363,11 @@
                     </div>
                 </div>
 
-                 <!-- EXAMPLE 4: VARIABLE PRICE PRODUCT -->
+                 <!-- Product 4 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/06/pollen-125--scaled-e1738589051179.jpg');"></div>
                     <h3>حبوب اللقاح (الطلع)</h3>
-                    <p class="card-desc">حبوب اللقاح هي غذاء فائق طبيعي، غني بالبروتينات والفيتامينات والمعادن، مثالي لزيادة طاقتك وتعزيز جهازك المناعي.</p>
+                    <p class="card-desc">حبوب اللقاح هي غذاء فائق طبيعي، غني بالبروتينات والفيتامينات والمعادن.</p>
                     <div class="price-container">
                         <select class="price-selector">
                             <option value="125g - 700 DA">125g - 700 DA</option>
@@ -340,13 +380,11 @@
                     </div>
                 </div>
                 
-               
-
-                 <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 5 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/MITIDJA1.png');"></div>
                     <h3> باقة متيجة</h3>
-                    <p class="card-desc">لا تفوت هذا العرض الحصري مع التوصيل المجاني لفترة محدودة. لتجديد الطاقة و الحفاظ على الجمال و القضاء على التعب.</p>
+                    <p class="card-desc">لا تفوت هذا العرض الحصري مع التوصيل المجاني لفترة محدودة.</p>
                     <div class="price-container">
                         <div class="price-single">3190 DA</div>
                     </div>
@@ -356,11 +394,11 @@
                     </div>
                 </div>
 
-                <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 6 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://delimfg.com/wp-content/uploads/2024/03/The-Ultimate-Guide-to-Royal-Food-Royal-Jelly.jpg.webp');"></div>
-                    <h3 >الغذاء الملكي الطبيعي</h3>
-                    <p class="card-desc">غذاء ملكات النحل يعج بتشكيلة واسعة من المغذيات، تشمل معادن مثل الكالسيوم، النحاس، الحديد، الفوسفور، السيليكون، الكبريت، والبوتاسيوم. كما يضم مجموعة متنوعة من الفيتامينات</p>
+                    <h3>الغذاء الملكي الطبيعي</h3>
+                    <p class="card-desc">غذاء ملكات النحل يعج بتشكيلة واسعة من المغذيات.</p>
                     <div class="price-container">
                         <div class="price-single">2950 DA</div>
                     </div>
@@ -370,226 +408,212 @@
                     </div>
                 </div>
 
-                 <!-- EXAMPLE 5: VARIABLE PRICE PRODUCT (Duplicate from your code) -->
+                 <!-- Product 7 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/IMG_20241106_125902.jpg');"></div>
                     <h3>المحفز</h3>
-                    <p class="card-desc">  منتجنا “المحفز” الرائع، يجمع بين العسل الطبيعي، ومجموعة مختارة بعناية من الفواكه الجافة مثل اللوز و الفستق …</p>
+                    <p class="card-desc">منتجنا “المحفز” الرائع، يجمع بين العسل الطبيعي، ومجموعة مختارة بعناية.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="250g - 1200 DA">250g - 1200 DA</option>
                             <option value="500g - 1800 DA">500g - 1800 DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
                         <button class="btn-buy" onclick="buyNowVariable(this, 'المحفز')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart('المحفز   ')">Panier</button>
+                        <button class="btn-cart" onclick="addToCart('المحفز')">Panier</button>
                     </div>
                 </div>
 
-                <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 8 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_3-1-scaled.jpg');"></div>
-                    <h3 >حزمة العائلة</h3>
-                    <p class="card-desc"> من أحسن العروض. اطلب الآن و أحصل على هدايا و توصيل مجاني… إنغمس في تجربة حسية فريدة مع حزمة عائلية من 3 كغ من العسل المختار بعناية</p>
+                    <h3>حزمة العائلة</h3>
+                    <p class="card-desc">من أحسن العروض. اطلب الآن و أحصل على هدايا و توصيل مجاني.</p>
                     <div class="price-container">
                         <div class="price-single">12500 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' حزمة العائلة  ', '2950 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' حزمة العائلة  ')">Panier</button>
-
+                        <button class="btn-buy" onclick="buyNow(' حزمة العائلة', '12500 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' حزمة العائلة')">Panier</button>
                     </div>
                 </div>
 
-                <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 9 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_8-1-scaled.jpg');"></div>
-                    <h3 >حزمة العسل أطلس</h3>
-                    <p class="card-desc">انغمس في تجربة ذوق استثنائية مع باقة العسل “أطلس”، اندماج فريد من النكهات المثيرة القادمة من قمم سامية ومروج زهرية، بين سلسلتي الأطلس الجزائري </p>
+                    <h3>حزمة العسل أطلس</h3>
+                    <p class="card-desc">انغمس في تجربة ذوق استثنائية مع باقة العسل “أطلس”.</p>
                     <div class="price-container">
-                        <div class="price-single"> 10700 DA</div>
+                        <div class="price-single">10700 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' حزمة العسل أطلس  ', '10700 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart('  حزمة العسل أطلس ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNow(' حزمة العسل أطلس', '10700 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' حزمة العسل أطلس')">Panier</button>
                     </div>
                 </div>
 
-                <!-- EXAMPLE 1: DIRECT PRICE PRODUCT -->
+                <!-- Product 10 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/12/1_5-1-scaled.jpg');"></div>
-                    <h3 >حزمة عسل الشتاء</h3>
-                    <p class="card-desc"> عسل الزعتر الرائع، عسل الكاليتوس وعسل الحمضيات. الحل المثالي لتقوية جهازك المناعي، علاج الأمراض الشتوية، وتعزيز الطاقة</p>
+                    <h3>حزمة عسل الشتاء</h3>
+                    <p class="card-desc">عسل الزعتر الرائع، عسل الكاليتوس وعسل الحمضيات.</p>
                     <div class="price-container">
                         <div class="price-single">6600 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' حزمة عسل الشتاء  ', '6600 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' حزمة عسل الشتاء  ')">Panier</button>
-
+                        <button class="btn-buy" onclick="buyNow(' حزمة عسل الشتاء', '6600 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' حزمة عسل الشتاء')">Panier</button>
                     </div>
                 </div>
 
-                <!-- EXAMPLE 5: VARIABLE PRICE PRODUCT (Duplicate from your code) -->
+                <!-- Product 11 -->
                 <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/multifleurs--scaled-e1738590986105.jpg');"></div>
                     <h3>عسل متعدد الأزهار الفاخر</h3>
-                    <p class="card-desc">عسل متعدد الزهور البرية “الحر” هو خلاصة مواسم مفتوحة،
-حيث تتلاقى أزهار البرّ في توازن دقيق،
-ويصنع النحل عسلاً غنيّاً، متكاملاً، لا يُستنسخ.
-                             </p>
+                    <p class="card-desc">عسل متعدد الزهور البرية “الحر” هو خلاصة مواسم مفتوحة.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="125g - 920 DA">125g - 920 DA</option>
                             <option value="250g - 1520 DA">250g - 1520 DA</option>
-			                 <option value="500g - 2760 DA">500g - 2760 DA</option>
+                            <option value="500g - 2760 DA">500g - 2760 DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this, 'عسل متعدد الأزهار الفاخر ')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' عسل متعدد الأزهار الفاخر   ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNowVariable(this, 'عسل متعدد الأزهار الفاخر')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' عسل متعدد الأزهار الفاخر')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 12 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/03/1_13-1-scaled-e1738593933644.jpg');"></div>
                     <h3>عسل الكاليتوس الطبيعي</h3>
-                    <p class="card-desc">فعّال للسعال ودعم الجهاز التنفسي، يقوّي المناعة ويهدّئ الحلق</p>
+                    <p class="card-desc">فعّال للسعال ودعم الجهاز التنفسي.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="125g - 990 DA">125g -990 DA</option>
                             <option value="250g - 1430 DA">250g -1430  DA</option>
-			                <option value="500g - 2750 DA">500g -2750 DA</option>
+                            <option value="500g - 2750 DA">500g -2750 DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
                         <button class="btn-buy" onclick="buyNowVariable(this, 'عسل الكاليتوس الطبيعي')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' عسل الكاليتوس الطبيعي  ')">Panier</button>
+                        <button class="btn-cart" onclick="addToCart(' عسل الكاليتوس الطبيعي')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 13 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/02/1000012535-scaled.jpg');"></div>
                     <h3>عسل اللبينة الطبيعي</h3>
-                    <p class="card-desc">طبيعي 100% من علامة الحر، قوي ونادر، يدعم التنفس، مضاد للحساسية، ويقاوم الالتهابات ويمنح طاقة طبيعية </p>
+                    <p class="card-desc">طبيعي 100% من علامة الحر، قوي ونادر.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="125g -1090  DA">125g -1090  DA</option>
                             <option value="250g -1600  DA">250g -1600  DA</option>
-			                <option value="500g -2900  DA">500g -2900  DA</option>
+                            <option value="500g -2900  DA">500g -2900  DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
                         <button class="btn-buy" onclick="buyNowVariable(this, 'عسل اللبينة الطبيعي')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' عسل اللبينة الطبيعي  ')">Panier</button>
+                        <button class="btn-cart" onclick="addToCart(' عسل اللبينة الطبيعي')">Panier</button>
                     </div>
                 </div>
 
-
+                  <!-- Product 14 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/08/agrume-scaled-e1738591816770-700x635.jpg');"></div>
                     <h3>عسل الحمضيات الطبيعي</h3>
-                    <p class="card-desc">عسل الحمضيات الطبيعي من علامة الحر، بطعم خفيف ومنعش، يساعد على تهدئة الأعصاب، تحسين النوم، وتقوية المناعة </p>
+                    <p class="card-desc">عسل الحمضيات الطبيعي من علامة الحر، بطعم خفيف ومنعش.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="125g -880  DA">125g -880  DA</option>
                             <option value="250g -1430  DA">250g -1430  DA</option>
-			                <option value="500g -2470  DA">500g -2470  DA</option>
+                            <option value="500g -2470  DA">500g -2470  DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
                         <button class="btn-buy" onclick="buyNowVariable(this, 'عسل الحمضيات الطبيعي')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' عسل الحمضيات الطبيعي  ')">Panier</button>
+                        <button class="btn-cart" onclick="addToCart(' عسل الحمضيات الطبيعي')">Panier</button>
                     </div>
                 </div>
 
-
+                  <!-- Product 15 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/montagne--scaled-e1738591358563.jpg');"></div>
                     <h3>عسل الجبل البري الفاخر</h3>
-                    <p class="card-desc">عسل الجبل البري 100% من الحر، فاخر، إنتاج محدود، غني بالمغذيات ويقوي المناعة والطاقة. </p>
+                    <p class="card-desc">عسل الجبل البري 100% من الحر، فاخر، إنتاج محدود.</p>
                     <div class="price-container">
                         <select class="price-selector">
-                            
                             <option value="125g -1120  DA">125g -1120  DA</option>
                             <option value="250g -1750  DA">250g -1750  DA</option>
-			                <option value="500g -2950  DA">500g -2950  DA</option>
+                            <option value="500g -2950  DA">500g -2950  DA</option>
                         </select>
                     </div>
                     <div class="btn-actions">
                         <button class="btn-buy" onclick="buyNowVariable(this, 'عسل الجبل البري الفاخر')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart('عسل الجبل البري الفاخر   ')">Panier</button>
+                        <button class="btn-cart" onclick="addToCart('عسل الجبل البري الفاخر')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 16 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/mohafez.png');"></div>
-                    <h3 >عسل طبيعي بالغذاء الملكي</h3>
-                    <p class="card-desc">تحفة طبيعية نادرة، حيث يتم استخراجه من مصادر زهرية مختارة بعناية. يعزز هذا الاهتمام بتفاصيل الإنتاج جودة العسل، حيث يتم جمعه من مزارع نباتات برية تكون بعيدة عن الملوثات البيئية </p>
+                    <h3>عسل طبيعي بالغذاء الملكي</h3>
+                    <p class="card-desc">تحفة طبيعية نادرة، حيث يتم استخراجه من مصادر زهرية مختارة.</p>
                     <div class="price-container">
                         <div class="price-single">7400 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' عسل طبيعي بالغذاء الملكي  ', '7400 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' عسل طبيعي بالغذاء الملكي  ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNow(' عسل طبيعي بالغذاء الملكي', '7400 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' عسل طبيعي بالغذاء الملكي')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 17 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%A7%D9%84%D8%B9%D9%83%D8%A8%D8%B110-scaled.webp');"></div>
-                    <h3 >العكبر</h3>
-                    <p class="card-desc">تعتبر إحدى أهم المكونات التي تسهم في تعزيز الصحة البشرية. يتم إنتاجه عندما تقوم النحلة بخلق خلية خاصة به لتخزين غذاء خاص بها، وهو عبارة عن خليط من اللقاح وعسل النحل. يُعتبر عكبر النحل مصدرًا غنيًا بالعناصر الغذائية والفيتامينات </p>
+                    <h3>العكبر</h3>
+                    <p class="card-desc">مصدر غني بالعناصر الغذائية والفيتامينات.</p>
                     <div class="price-container">
                         <div class="price-single">600 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' العكبر  ', '600 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' العكبر  ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNow(' العكبر', '600 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' العكبر')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 18 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/1-1-1-scaled.jpg');"></div>
-                    <h3 >كريمة شمع النحل</h3>
-                    <p class="card-desc">يتميز كريم شمع النحل بقدرته على ترطيب البشرة بعمق، مما يجعلها ناعمة ومشرقة. يحتوي الشمع على خصائص مغذية تعزز الرطوبة الطبيعية للبشرة، مما يساعد في تحسين مرونتها </p>
+                    <h3>كريمة شمع النحل</h3>
+                    <p class="card-desc">يتميز كريم شمع النحل بقدرته على ترطيب البشرة بعمق.</p>
                     <div class="price-container">
                         <div class="price-single">600 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow(' كريمة شمع النحل  ', '600 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart(' كريمة شمع النحل  ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNow(' كريمة شمع النحل', '600 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart(' كريمة شمع النحل')">Panier</button>
                     </div>
                 </div>
 
+                  <!-- Product 19 -->
                   <div class="card">
                     <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2023/11/%D8%B4%D9%85%D8%B9-%D8%A7%D9%84%D9%86%D8%AD%D9%8410-scaled.webp');"></div>
-                    <h3 >صابون شمع العسل</h3>
-                    <p class="card-desc">   ترطيب عميق وحماية و مكافحة الالتهابات والتهدئة و تجربة جمال طبيعية</p>
+                    <h3>صابون شمع العسل</h3>
+                    <p class="card-desc">ترطيب عميق وحماية و مكافحة الالتهابات.</p>
                     <div class="price-container">
                         <div class="price-single">200 DA</div>
                     </div>
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNow('   ', '200 DA')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart('   ')">Panier</button>
+                        <button class="btn-buy" onclick="buyNow('صابون شمع العسل', '200 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart('صابون شمع العسل')">Panier</button>
                     </div>
                 </div>
-
-
-
-
-
             </div>
-            <!-- ====================================================== -->
-            <!-- CAUTION: ADD YOUR MANUAL PRODUCTS HERE (END)           -->
-            <!-- ====================================================== -->
-
-            
+        </section>
 
         <!-- Training Section -->
         <section id="formation">
@@ -635,13 +659,47 @@
             </div>
         </section>
 
-        <!-- Certificates -->
+        <!-- Certificates CAROUSEL -->
         <section id="certificats">
             <div class="section-header">
                 <h2>Certifications</h2>
                 <div class="line"></div>
             </div>
-            <div id="cert-list" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
+            
+            <div class="cert-carousel-container">
+                <div class="cert-carousel" id="cert-list">
+                    
+                    <!-- ====================================================== -->
+                    <!-- CAUTION: ADD YOUR CERTIFICATES HERE (START)            -->
+                    <!-- ====================================================== -->
+                    
+                    <!-- Example Certificate 1 -->
+                    <div class="cert-box">
+                        <img src="https://placehold.co/200x200/fff/000?text=Cert+1" class="cert-img" alt="Certificat 1">
+                        <h3 style="margin: 0; color: #000; font-size: 18px;">Certificat Bio</h3>
+                        <p style="color: #666; margin-top: 10px;">Certification Biologique 2023</p>
+                    </div>
+
+                    <!-- Example Certificate 2 -->
+                    <div class="cert-box">
+                        <img src="https://placehold.co/200x200/fff/000?text=Cert+2" class="cert-img" alt="Certificat 2">
+                        <h3 style="margin: 0; color: #000; font-size: 18px;">Excellence Api</h3>
+                        <p style="color: #666; margin-top: 10px;">Prix Qualité National</p>
+                    </div>
+
+                    <!-- Example Certificate 3 -->
+                    <div class="cert-box">
+                        <img src="https://placehold.co/200x200/fff/000?text=Cert+3" class="cert-img" alt="Certificat 3">
+                        <h3 style="margin: 0; color: #000; font-size: 18px;">ISO 9001</h3>
+                        <p style="color: #666; margin-top: 10px;">Norme Internationale</p>
+                    </div>
+
+                    <!-- ====================================================== -->
+                    <!-- CAUTION: ADD YOUR CERTIFICATES HERE (END)              -->
+                    <!-- ====================================================== -->
+
+                </div>
+            </div>
         </section>
 
         <!-- Contact -->
@@ -668,7 +726,7 @@
         <footer><p>&copy; 2024 La Ruche Slimi. Tous droits réservés.</p></footer>
     </div>
 
-    <!-- ADMIN DASHBOARD (Hidden by default) -->
+    <!-- ADMIN DASHBOARD -->
     <div id="admin-dashboard">
         <div class="dashboard-header">
             <h2 class="dashboard-title">Admin</h2>
@@ -773,7 +831,6 @@
     <script>
         // --- 1. BUTTON HELPER FUNCTIONS ---
 
-        // Function for DIRECT PRICE products
         function buyNow(name, price) {
             const phone = "213542019359"; 
             const text = `Bonjour, je souhaite commander: ${name} (Prix: ${price}).`;
@@ -781,7 +838,6 @@
             window.open(url, '_blank');
         }
 
-        // Function for VARIABLE PRICE products (Dropdown)
         function buyNowVariable(buttonElement, name) {
             const card = buttonElement.closest('.card');
             const select = card.querySelector('.price-selector');
@@ -818,84 +874,28 @@
         // --- 3. INITIALIZATION ---
         function initializeData() {
             if (!localStorage.getItem('products')) {
-                const defaultProducts = [
-                    { 
-                        id: 1, 
-                        name: 'Mier Standard (Variable)', 
-                        desc: 'Miel avec variation de poids.', 
-                        prices: {'125g':'500 DA', '250g':'900 DA', '500g':'1700 DA'}, 
-                        priceType: 'variable', 
-                        category: 'cat1', 
-                        image: 'https://placehold.co/300x200/222/D4AF37?text=Variable' 
-                    },
-                    { 
-                        id: 2, 
-                        name: 'Pack Premium (Direct)', 
-                        desc: 'Pack unique prix fixe.', 
-                        prices: {'Prix':'3500 DA'}, 
-                        priceType: 'direct', 
-                        category: 'cat2', 
-                        image: 'https://placehold.co/300x200/222/D4AF37?text=Direct' 
-                    }
-                ];
-                localStorage.setItem('products', JSON.stringify(defaultProducts));
+                localStorage.setItem('products', JSON.stringify([])); // Empty default, use HTML
             }
             if (!localStorage.getItem('certificates')) {
-                localStorage.setItem('certificates', JSON.stringify([{ id: 1, name: 'Bio', desc: 'Certifié', image: 'https://placehold.co/200x150/fff/000?text=BIO' }]));
+                localStorage.setItem('certificates', JSON.stringify([])); // Empty default, use HTML
             }
         }
 
         // --- 4. RENDER FUNCTIONS ---
         
         function renderProducts() {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const containers = {
-                cat1: document.getElementById('cat1-list'),
-                cat2: document.getElementById('cat2-list'),
-                cat3: document.getElementById('cat3-list'),
-                cat4: document.getElementById('cat4-list')
-            };
-            
-            Object.values(containers).forEach(c => {
-                if(c) c.innerHTML = '';
-            });
+            // We are using manual HTML for products now, so we can leave this empty or just clear dynamic containers
+            // If you want dynamic products back, uncomment the logic.
+             const products = JSON.parse(localStorage.getItem('products')) || [];
+             const containers = {
+                 cat1: document.getElementById('cat1-list'),
+                 cat2: document.getElementById('cat2-list'),
+                 cat3: document.getElementById('cat3-list'),
+                 cat4: document.getElementById('cat4-list')
+             };
+             Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
 
-            products.forEach(p => {
-                let priceHTML = '';
-                let buttonHTML = '';
-                
-                if (p.priceType === 'direct' || (Object.keys(p.prices).length === 1 && p.prices['Prix'])) {
-                    const val = p.prices['Prix'] || Object.values(p.prices)[0];
-                    priceHTML = `<div class="price-single">${val}</div>`;
-                    buttonHTML = `
-                        <div class="btn-actions">
-                            <button class="btn-buy" onclick="buyNow('${p.name}', '${val}')">Acheter</button>
-                            <button class="btn-cart" onclick="addToCart('${p.name}')">Panier</button>
-                        </div>`;
-                } else {
-                    const options = Object.entries(p.prices).map(([w, pr]) => `<option value="${w}">${w} - ${pr}</option>`).join('');
-                    priceHTML = `<select class="price-selector">${options}</select>`;
-                    buttonHTML = `
-                        <div class="btn-actions">
-                            <button class="btn-buy" onclick="buyNowVariable(this, '${p.name}')">Acheter</button>
-                            <button class="btn-cart" onclick="addToCart('${p.name}')">Panier</button>
-                        </div>`;
-                }
-
-                const card = `
-                    <div class="card">
-                        <div class="card-img" style="background-image: url('${p.image}');"></div>
-                        <h3>${p.name}</h3>
-                        <p class="card-desc">${p.desc}</p>
-                        <div class="price-container">${priceHTML}</div>
-                        ${buttonHTML}
-                    </div>
-                `;
-                
-                if (containers[p.category]) {
-                    containers[p.category].innerHTML += card;
-                }
-            });
+             // Logic to render dynamic products if needed...
         }
 
         function renderAdminProductList() {
@@ -920,18 +920,7 @@
         }
 
         function renderCertificates() {
-            const certs = JSON.parse(localStorage.getItem('certificates')) || [];
-            const container = document.getElementById('cert-list');
-            container.innerHTML = '';
-            certs.forEach(c => {
-                container.innerHTML += `
-                    <div class="cert-box">
-                        <img src="${c.image}" class="cert-img" alt="${c.name}">
-                        <h3 style="margin: 0; color: #000; font-size: 18px;">${c.name}</h3>
-                        <p style="color: #666; margin-top: 10px;">${c.desc}</p>
-                    </div>
-                `;
-            });
+            // Using manual HTML for certificates now
         }
 
         // --- 5. DELETE & HELPERS ---
@@ -957,8 +946,13 @@
 
         // --- 6. EVENT LISTENERS ---
         
-        // Admin button listener removed as the button was removed from navbar
-        
+        function enterAdminMode() {
+            document.getElementById('main-website').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+            document.getElementById('main-header').style.display = 'none';
+            renderAdminProductList();
+        }
+
         document.getElementById('back-to-site').addEventListener('click', () => {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('main-website').style.display = 'block';
@@ -1014,7 +1008,7 @@
             const certs = JSON.parse(localStorage.getItem('certificates'));
             certs.push({ id: Date.now(), name, desc, image: imageData });
             localStorage.setItem('certificates', JSON.stringify(certs));
-            alert('Certificat ajouté!');
+            alert('Certificat ajouté! (Note: Manual HTML in body is currently active)');
             this.reset();
         });
 
