@@ -2,30 +2,41 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Ruche Slimi - Miel Premium & Formation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>La Ruche Slimi</title>
+    
     <style>
-        /* --- CSS STYLES --- */
+        /* --- CSS VARIABLES FOR FLEXIBLE THEME --- */
         :root {
             --gold: #D4AF37;
             --black: #0a0a0a;
             --dark-grey: #1a1a1a;
             --white: #ffffff;
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-top: env(safe-area-inset-top, 0px);
         }
 
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--black);
             color: var(--white);
             scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation */
+        /* --- NAVIGATION --- */
         header {
             background-color: rgba(0, 0, 0, 0.98);
-            padding: 20px 50px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -33,39 +44,62 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            padding-top: max(15px, var(--safe-area-top)); /* iPhone Notch Support */
         }
-        .logo { font-size: 26px; font-weight: bold; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        nav ul { list-style: none; display: flex; gap: 30px; padding: 0; margin: 0; align-items: center; }
-        nav a { color: var(--white); text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        
+        .logo { font-size: clamp(18px, 4vw, 26px); font-weight: bold; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        
+        nav ul { list-style: none; display: flex; gap: 15px; padding: 0; margin: 0; align-items: center; flex-wrap: wrap; }
+        nav a { color: var(--white); text-decoration: none; font-size: clamp(12px, 2.5vw, 14px); text-transform: uppercase; transition: 0.3s; }
         nav a:hover { color: var(--gold); }
-        .btn-admin { background-color: transparent; color: var(--gold) !important; border: 1px solid var(--gold); padding: 8px 20px; border-radius: 2px; font-weight: bold; cursor: pointer; text-decoration: none; }
-        .btn-admin:hover { background-color: var(--gold); color: var(--black) !important; }
+        
+        .btn-admin { 
+            background-color: transparent; color: var(--gold) !important; border: 1px solid var(--gold); 
+            padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; text-decoration: none; 
+            font-size: 12px; white-space: nowrap;
+        }
+        .btn-admin:hover, .btn-admin:active { background-color: var(--gold); color: var(--black) !important; }
 
-        /* Sections */
-        section { padding: 80px 10%; }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 42px; color: var(--gold); font-family: Georgia, serif; margin: 0; text-transform: uppercase; }
-        .section-header .line { width: 100px; height: 2px; background-color: var(--gold); margin: 20px auto; }
+        /* --- SECTIONS --- */
+        section { padding: 60px 5%; } /* Flexible padding */
 
-        /* Hero */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%); border-bottom: 1px solid var(--gold); }
-        .hero h1 { font-size: 80px; margin: 0; color: var(--gold); font-family: Georgia, serif; }
-        .hero p { font-size: 20px; color: #ccc; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 50px 0; }
-        .btn { padding: 18px 40px; text-decoration: none; font-weight: 600; text-transform: uppercase; border-radius: 0; transition: all 0.3s ease; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-size: clamp(28px, 6vw, 42px); color: var(--gold); font-family: Georgia, serif; margin: 0; text-transform: uppercase; }
+        .section-header .line { width: 80px; height: 2px; background-color: var(--gold); margin: 15px auto; }
+
+        /* --- HERO --- */
+        .hero { 
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%); border-bottom: 1px solid var(--gold);
+            padding: 20px;
+        }
+        .hero h1 { font-size: clamp(40px, 10vw, 80px); margin: 0; color: var(--gold); font-family: Georgia, serif; }
+        .hero p { font-size: clamp(14px, 3vw, 20px); color: #ccc; letter-spacing: 1px; text-transform: uppercase; margin: 10px 0 30px 0; }
+        
+        .btn { padding: 15px 30px; text-decoration: none; font-weight: 600; text-transform: uppercase; border-radius: 0; transition: all 0.3s ease; display: inline-block; }
         .btn-primary { background-color: var(--gold); color: var(--black); border: 2px solid var(--gold); }
-        .btn-primary:hover { background-color: transparent; color: var(--gold); }
+        .btn-primary:active { background-color: transparent; color: var(--gold); }
 
-        /* Grid & Products */
+        /* --- PRODUCTS --- */
         #produits { background-color: var(--dark-grey); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
         
-        .card { background-color: var(--black); border: 1px solid #333; padding: 20px; text-align: center; transition: 0.4s; display: flex; flex-direction: column; }
-        .card:hover { border-color: var(--gold); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        /* Flexible Grid: Fits 1 col on small phones, 2 on large phones, 3-4 on tablets/desktop */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(max(250px, 45%), 1fr)); 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
         
-        .card-img { height: 180px; background-color: #222; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; color: #555; background-size: cover; background-position: center; background-repeat: no-repeat; }
-        .card h3 { color: var(--white); font-size: 18px; margin: 10px 0; }
+        .card { background-color: var(--black); border: 1px solid #333; padding: 15px; text-align: center; transition: 0.3s; display: flex; flex-direction: column; }
+        .card:active { border-color: var(--gold); transform: scale(0.98); }
         
-        .card-desc { color: #aaa; font-size: 14px; margin: 0 0 15px 0; min-height: 40px; flex-grow: 1; }
+        .card-img { height: 0; padding-bottom: 60%; background-color: #222; margin-bottom: 15px; background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; }
+        .card h3 { color: var(--white); font-size: clamp(16px, 4vw, 18px); margin: 10px 0; }
+        .card-desc { color: #aaa; font-size: clamp(12px, 3vw, 14px); margin: 0 0 15px 0; flex-grow: 1; }
 
         /* Price Selector */
         .price-container { margin-top: auto; width: 100%; }
@@ -75,150 +109,112 @@
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D4AF37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: right 10px center; background-size: 20px;
-            box-sizing: border-box;
         }
         .price-selector option { background-color: var(--black); color: var(--white); }
 
-        /* Direct Price Style */
-        .price-single {
-            width: 100%; padding: 12px; background-color: transparent; border: 1px solid var(--gold); color: var(--gold);
-            font-weight: bold; font-size: 18px; margin-top: 10px; display: flex; align-items: center; justify-content: center;
-            box-sizing: border-box;
-        }
+        .price-single { width: 100%; padding: 12px; border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 18px; margin-top: 10px; display: flex; align-items: center; justify-content: center; }
 
-        .category-title { font-size: 28px; color: var(--white); text-align: center; margin: 50px 0 30px 0; font-family: Georgia, serif; position: relative; }
-        .category-title span { background-color: var(--dark-grey); padding: 0 20px; position: relative; z-index: 1; }
+        .category-title { font-size: clamp(20px, 5vw, 28px); color: var(--white); text-align: center; margin: 40px 0 20px 0; font-family: Georgia, serif; position: relative; }
+        .category-title span { background-color: var(--dark-grey); padding: 0 15px; position: relative; z-index: 1; }
         .category-title::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #333; z-index: 0; }
 
-        /* Training Section */
+        /* --- TRAINING --- */
         #formation { background-color: var(--black); }
-        .training-intro { max-width: 900px; margin: 0 auto 60px auto; text-align: center; font-size: 18px; line-height: 1.8; color: #ddd; }
-        .training-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 60px; }
-        .training-block { background-color: rgba(255,255,255,0.03); padding: 30px; border-left: 3px solid var(--gold); }
-        .training-block h3 { color: var(--gold); margin-top: 0; font-family: Georgia, serif; font-size: 24px; }
+        .training-intro { max-width: 900px; margin: 0 auto 40px auto; text-align: center; font-size: clamp(14px, 3vw, 18px); line-height: 1.6; color: #ddd; padding: 0 10px; }
+        .training-content { display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 40px; }
+        
+        .training-block { background-color: rgba(255,255,255,0.03); padding: 20px; border-left: 3px solid var(--gold); }
+        .training-block h3 { color: var(--gold); margin-top: 0; font-family: Georgia, serif; font-size: 20px; }
         .training-block ul { list-style: none; padding: 0; }
-        .training-block li { margin-bottom: 15px; padding-left: 20px; position: relative; color: #ccc; }
-        .training-block li::before { content: '•'; color: var(--gold); position: absolute; left: 0; font-size: 20px; line-height: 18px; }
+        .training-block li { margin-bottom: 10px; padding-left: 20px; position: relative; color: #ccc; font-size: 14px; }
+        .training-block li::before { content: '•'; color: var(--gold); position: absolute; left: 0; }
 
-        .consultation-section { background-color: var(--dark-grey); padding: 60px; border: 1px solid #333; max-width: 1000px; margin: 0 auto; }
-        .consultation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .info-box h4 { color: var(--gold); margin-bottom: 20px; font-size: 20px; text-transform: uppercase; }
-        .info-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+        .consultation-section { background-color: var(--dark-grey); padding: 30px 15px; border: 1px solid #333; margin: 0 auto; }
+        .consultation-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .info-box h4 { color: var(--gold); margin-bottom: 15px; font-size: 18px; text-transform: uppercase; }
+        .info-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; font-size: 14px; }
         
-        .form-row { margin-bottom: 20px; }
-        .form-row label { display: block; color: var(--gold); font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
-        .form-row input, .form-row select { width: 100%; padding: 12px; background-color: var(--black); border: 1px solid #333; color: var(--white); font-size: 14px; box-sizing: border-box; }
-        .btn-submit { width: 100%; padding: 15px; background-color: var(--gold); color: var(--black); border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-submit:hover { background-color: var(--white); }
+        .form-row { margin-bottom: 15px; }
+        .form-row label { display: block; color: var(--gold); font-size: 12px; text-transform: uppercase; margin-bottom: 6px; }
+        .form-row input, .form-row select { width: 100%; padding: 12px; background-color: var(--black); border: 1px solid #333; color: var(--white); font-size: 16px; /* Prevents iOS zoom */ border-radius: 4px; }
+        .btn-submit { width: 100%; padding: 15px; background-color: var(--gold); color: var(--black); border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 16px; }
 
-        /* Certificates */
+        /* --- CERTIFICATS & CONTACT --- */
         #certificats { background-color: var(--dark-grey); text-align: center; }
-        .cert-box { display: inline-block; background: #fff; color: #000; padding: 40px; margin: 20px; border: 4px solid var(--gold); }
-        .cert-img { width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px; background: #eee; }
+        .cert-box { display: inline-block; background: #fff; color: #000; padding: 20px; margin: 10px; border: 4px solid var(--gold); width: 90%; max-width: 300px; }
+        .cert-img { width: 100%; height: auto; object-fit: cover; margin-bottom: 10px; background: #eee; }
 
-        /* Contact Section */
-        #contact { background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); padding: 120px 20px; text-align: center; border-top: 1px solid #222; }
+        #contact { background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); padding: 60px 20px; text-align: center; border-top: 1px solid #222; padding-bottom: max(60px, calc(var(--safe-area-bottom) + 20px)); }
         .contact-luxury-container { max-width: 800px; margin: 0 auto; }
-        .contact-luxury-title { font-family: Georgia, serif; font-size: 48px; color: var(--gold); margin-bottom: 20px; }
-        .contact-card-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 60px; }
-        .contact-card { background-color: rgba(255,255,255,0.03); border: 1px solid #333; padding: 40px; width: 220px; transition: 0.4s; }
-        .contact-card:hover { border-color: var(--gold); transform: translateY(-10px); }
-        .contact-icon-circle { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
-        .contact-icon-circle svg { width: 28px; height: 28px; fill: var(--gold); }
-        .contact-card h4 { color: var(--white); font-size: 18px; margin: 0 0 10px 0; }
-        .contact-card p { color: #aaa; font-size: 14px; margin: 0; line-height: 1.6; }
-        .social-luxury-btns { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .btn-social-lux { padding: 15px 40px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-social-lux svg { width: 20px; height: 20px; fill: var(--gold); }
-        .btn-social-lux:hover { background-color: var(--gold); color: var(--black); }
-        .btn-social-lux:hover svg { fill: var(--black); }
+        .contact-luxury-title { font-family: Georgia, serif; font-size: clamp(28px, 6vw, 48px); color: var(--gold); margin-bottom: 20px; }
+        .contact-card-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+        .contact-card { background-color: rgba(255,255,255,0.03); border: 1px solid #333; padding: 20px; width: 100%; max-width: 220px; transition: 0.4s; }
+        .contact-icon-circle { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
+        .contact-icon-circle svg { width: 24px; height: 24px; fill: var(--gold); }
+        
+        .social-luxury-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn-social-lux { padding: 12px 25px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; text-transform: uppercase; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-social-lux svg { width: 18px; height: 18px; fill: var(--gold); }
+        .btn-social-lux:active { background-color: var(--gold); color: var(--black); }
+        .btn-social-lux:active svg { fill: var(--black); }
 
-        /* ADMIN DASHBOARD */
-        #admin-dashboard { display: none; background-color: #121212; min-height: 100vh; padding: 50px; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 40px; }
-        .dashboard-title { color: var(--gold); font-size: 32px; font-family: Georgia, serif; }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 1000px; margin: 0 auto; }
+        /* --- ADMIN DASHBOARD --- */
+        #admin-dashboard { display: none; background-color: #121212; min-height: 100vh; padding: 20px; padding-top: max(20px, var(--safe-area-top)); }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 30px; }
+        .dashboard-title { color: var(--gold); font-size: 24px; font-family: Georgia, serif; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 800px; margin: 0 auto; }
         
-        .dash-card { background-color: #1a1a1a; padding: 30px; border: 1px solid #333; }
-        .dash-card h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .dash-card { background-color: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 8px; }
+        .dash-card h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 18px; }
         
-        .dash-form-row { margin-bottom: 20px; }
-        .dash-form-row label { display: block; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; font-size: 12px; }
-        .dash-form-row input, .dash-form-row select, .dash-form-row textarea { width: 100%; padding: 12px; background-color: #0a0a0a; border: 1px solid #333; color: white; box-sizing: border-box; font-family: inherit; }
+        .dash-form-row { margin-bottom: 15px; }
+        .dash-form-row label { display: block; color: var(--gold); margin-bottom: 6px; text-transform: uppercase; font-size: 12px; }
+        .dash-form-row input, .dash-form-row select, .dash-form-row textarea { 
+            width: 100%; padding: 12px; background-color: #0a0a0a; border: 1px solid #333; color: white; 
+            font-size: 16px; /* Prevents zoom on iOS */ border-radius: 4px; 
+        }
         
-        /* Radio Button Styling */
-        .radio-group { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
-        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #ccc; }
-        .radio-label input { accent-color: var(--gold); }
+        .radio-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #ccc; font-size: 14px; }
+        .radio-label input { accent-color: var(--gold); transform: scale(1.2); }
 
-        /* Admin Product List Item */
         .admin-list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background-color: #0a0a0a;
-            border-bottom: 1px solid #333;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; 
+            padding: 15px; background-color: #0a0a0a; border-bottom: 1px solid #333; gap: 10px;
         }
-        .admin-list-item:last-child { border-bottom: none; }
-        .admin-list-item span { color: #ccc; font-size: 14px; }
+        .admin-list-item span { color: #ccc; font-size: 15px; font-weight: bold; }
+        .admin-list-item small { color: #666; font-size: 12px; }
         
-        /* Buttons in Admin List */
-        .admin-actions { display: flex; gap: 10px; }
+        .admin-actions { display: flex; gap: 10px; width: 100%; }
         .btn-delete {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 12px;
-            transition: 0.3s;
+            background-color: #ff4d4d; color: white; border: none; padding: 10px 15px; cursor: pointer; 
+            font-weight: bold; text-transform: uppercase; font-size: 12px; flex: 1; border-radius: 4px;
         }
-        .btn-delete:hover { background-color: #cc0000; }
+        .btn-delete:active { background-color: #cc0000; }
 
         .btn-modify {
-            background-color: #4da6ff;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 12px;
-            transition: 0.3s;
+            background-color: #4da6ff; color: white; border: none; padding: 10px 15px; cursor: pointer; 
+            font-weight: bold; text-transform: uppercase; font-size: 12px; flex: 1; border-radius: 4px;
         }
-        .btn-modify:hover { background-color: #0066cc; }
+        .btn-modify:active { background-color: #0066cc; }
 
-        .btn-dash-submit { background-color: var(--gold); color: var(--black); padding: 15px 40px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
-        .btn-dash-submit:hover { background-color: var(--white); }
+        .btn-dash-submit { background-color: var(--gold); color: var(--black); padding: 15px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; width: 100%; margin-top: 10px; font-size: 16px; border-radius: 4px; }
+        .btn-dash-submit:active { background-color: var(--white); }
         
-        /* Cancel Edit Button */
-        .btn-cancel-edit {
-            background-color: #333;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-            margin-top: 10px;
-            display: none; /* Hidden by default */
-        }
+        .btn-cancel-edit { background-color: #333; color: white; padding: 15px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; width: 100%; margin-top: 10px; display: none; border-radius: 4px; }
 
-        input[type="file"] { border: 2px dashed #444 !important; cursor: pointer; color: #ccc; }
+        input[type="file"] { border: 2px dashed #444 !important; cursor: pointer; color: #ccc; padding: 10px; }
         input[type="file"]::-webkit-file-upload-button { visibility: hidden; }
-        input[type="file"]::before { content: 'Choisir une image'; display: inline-block; background: #333; color: #fff; padding: 5px 8px; outline: none; white-space: nowrap; cursor: pointer; }
+        input[type="file"]::before { content: '📷 Choisir image'; display: inline-block; background: #333; color: #fff; padding: 8px 12px; outline: none; white-space: nowrap; cursor: pointer; border-radius: 4px; }
 
-        footer { background-color: #000; padding: 30px; text-align: center; color: #666; border-top: 1px solid #222; }
+        footer { background-color: #000; padding: 20px; text-align: center; color: #666; border-top: 1px solid #222; padding-bottom: max(20px, calc(var(--safe-area-bottom) + 10px)); }
 
-        @media (max-width: 768px) {
-            .training-content, .consultation-grid { grid-template-columns: 1fr; }
-            .contact-luxury-title { font-size: 32px; }
-            header { padding: 15px 20px; }
+        /* --- RESPONSIVE QUERIES --- */
+        @media (min-width: 600px) {
+            .training-content, .consultation-grid { grid-template-columns: 1fr 1fr; }
+            .admin-list-item { flex-direction: row; align-items: center; }
+            .admin-actions { width: auto; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
     </style>
 </head>
@@ -229,10 +225,8 @@
         <div class="logo">La Ruche Slimi</div>
         <nav>
             <ul>
-                <li><a href="#hero">Accueil</a></li>
+                <li><a href="#hero">Home</a></li>
                 <li><a href="#produits">Produits</a></li>
-                <li><a href="#formation">Formation</a></li>
-                <li><a href="#certificats">Certificats</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><button class="btn-admin" id="admin-btn">Admin</button></li>
             </ul>
@@ -261,74 +255,48 @@
             <h3 class="category-title"><span>2. Packs</span></h3>
             <div id="cat2-list" class="grid"></div>
 
-            <h3 class="category-title"><span>3. Produit Ruche des Abeilles</span></h3>
+            <h3 class="category-title"><span>3. Produit Ruche</span></h3>
             <div id="cat3-list" class="grid"></div>
 
-            <h3 class="category-title"><span>4. Dérivés de la Ruche</span></h3>
+            <h3 class="category-title"><span>4. Dérivés</span></h3>
             <div id="cat4-list" class="grid"></div>
         </section>
 
         <!-- Training Section -->
         <section id="formation">
             <div class="section-header">
-                <h2>Formation & Consultations</h2>
+                <h2>Formation</h2>
                 <div class="line"></div>
             </div>
             <div class="training-intro">
-                <p>L'établissement Slimi est fier de transmettre le savoir-faire apicole. Nous avons formé plus de <strong>1500 apiculteurs</strong>.</p>
+                <p>Transmission du savoir-faire apicole depuis des générations.</p>
             </div>
             <div class="training-content">
                 <div class="training-block">
                     <h3>Objectifs</h3>
                     <ul>
-                        <li><strong>Expertise Technique :</strong> Gestion des ruches.</li>
-                        <li><strong>Durabilité :</strong> Pratiques respectueuses.</li>
+                        <li>Expertise Technique</li>
+                        <li>Durabilité</li>
                     </ul>
                 </div>
                 <div class="training-block">
-                    <h3>Méthodes</h3>
-                    <ul>
-                        <li><strong>Présentiel :</strong> Cours théoriques.</li>
-                        <li><strong>Ateliers :</strong> Pratique sur le terrain.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="consultation-section">
-                <div class="consultation-grid">
-                    <div class="info-box">
-                        <h4>Contact Formation</h4>
-                        <div class="info-item"><span style="font-size:18px;">📞</span><div><strong>Téléphone</strong><br>0542019359</div></div>
-                        <div class="info-item"><span style="font-size:18px;">📍</span><div><strong>Tipaza</strong><br>Cité 38 Logement N°11</div></div>
-                    </div>
-                    <div class="form-box">
-                        <h4 style="color:white; margin-top:0;">Demande</h4>
-                        <form>
-                            <div class="form-row"><label>Nom</label><input type="text"></div>
-                            <div class="form-row"><label>Email</label><input type="email"></div>
-                            <button type="button" class="btn-submit">Envoyer</button>
-                        </form>
+                    <h3>Contact</h3>
+                    <div class="info-item" style="margin:0;">
+                        <span>📞</span>
+                        <div><strong>Téléphone</strong><br>0542019359</div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Certificates -->
-        <section id="certificats">
-            <div class="section-header">
-                <h2>Certifications</h2>
-                <div class="line"></div>
-            </div>
-            <div id="cert-list" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
         </section>
 
         <!-- Contact -->
         <section id="contact">
             <div class="contact-luxury-container">
-                <h2 class="contact-luxury-title">Contactez-Nous</h2>
+                <h2 class="contact-luxury-title">Contact</h2>
                 <div class="contact-card-grid">
                     <div class="contact-card">
                         <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
-                        <h4>Téléphone</h4><p>0542019359</p>
+                        <h4>Appeler</h4><p>0542019359</p>
                     </div>
                     <div class="contact-card">
                         <div class="contact-icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
@@ -342,24 +310,22 @@
             </div>
         </section>
 
-        <footer><p>&copy; 2024 La Ruche Slimi. Tous droits réservés.</p></footer>
+        <footer><p>&copy; 2024 La Ruche Slimi</p></footer>
     </div>
 
     <!-- ADMIN DASHBOARD -->
     <div id="admin-dashboard">
         <div class="dashboard-header">
-            <h2 class="dashboard-title">Admin</h2>
+            <h2 class="dashboard-title">Admin Panel</h2>
             <button class="btn-admin" id="back-to-site" style="cursor: pointer;">← Retour</button>
         </div>
 
         <div class="dashboard-grid">
-            
-            <!-- Add/Edit Product Form -->
             <div class="dash-card">
                 <h3 id="form-title">Ajouter un Produit</h3>
                 <form id="product-form">
                     <div class="dash-form-row">
-                        <label>Nom du Produit</label>
+                        <label>Nom</label>
                         <input type="text" id="p-name" required>
                     </div>
                     
@@ -368,41 +334,29 @@
                         <textarea id="p-desc" rows="3" required></textarea>
                     </div>
 
-                    <!-- Price Type Selector -->
                     <div class="dash-form-row">
                         <label>Type de Prix</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="price_type" value="variable" checked onchange="togglePriceInputs()">
-                                Par Poids (125g, 250g...)
+                                Poids
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="price_type" value="direct" onchange="togglePriceInputs()">
-                                Prix Direct (Unique)
+                                Unique
                             </label>
                         </div>
                     </div>
 
-                    <!-- Variable Price Inputs -->
-                    <div id="price-variable-block" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                        <div>
-                            <label>Prix (125g)</label>
-                            <input type="text" id="p-price-125" placeholder="Ex: 500">
-                        </div>
-                        <div>
-                            <label>Prix (250g)</label>
-                            <input type="text" id="p-price-250" placeholder="Ex: 900">
-                        </div>
-                        <div>
-                            <label>Prix (500g)</label>
-                            <input type="text" id="p-price-500" placeholder="Ex: 1700">
-                        </div>
+                    <div id="price-variable-block" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div><label>125g</label><input type="text" id="p-price-125" placeholder="DA"></div>
+                        <div><label>250g</label><input type="text" id="p-price-250" placeholder="DA"></div>
+                        <div><label>500g</label><input type="text" id="p-price-500" placeholder="DA"></div>
                     </div>
 
-                    <!-- Direct Price Input -->
-                    <div id="price-direct-block" style="display:none; margin-bottom: 20px;">
+                    <div id="price-direct-block" style="display:none; margin-bottom: 15px;">
                         <label>Prix Unique</label>
-                        <input type="text" id="p-price-direct" placeholder="Ex: 1500 DA">
+                        <input type="text" id="p-price-direct" placeholder="DA">
                     </div>
 
                     <div class="dash-form-row">
@@ -410,75 +364,51 @@
                         <select id="p-cat">
                             <option value="cat1">1. Meilleures Ventes</option>
                             <option value="cat2">2. Packs</option>
-                            <option value="cat3">3. Produit Ruche</option>
+                            <option value="cat3">3. Ruche</option>
                             <option value="cat4">4. Dérivés</option>
                         </select>
                     </div>
                     <div class="dash-form-row">
-                        <label>Image (Laisser vide pour garder l'ancienne lors de modification)</label>
+                        <label>Image</label>
                         <input type="file" id="p-image" accept="image/*">
                     </div>
                     <button type="submit" class="btn-dash-submit" id="submit-btn">Ajouter</button>
-                    <button type="button" class="btn-cancel-edit" id="cancel-edit-btn" onclick="cancelEdit()">Annuler la modification</button>
+                    <button type="button" class="btn-cancel-edit" id="cancel-edit-btn" onclick="cancelEdit()">Annuler</button>
                 </form>
             </div>
 
-            <!-- Product List Management -->
             <div class="dash-card">
                 <h3>Liste des Produits</h3>
-                <div id="admin-product-list">
-                    <!-- Dynamic list will appear here -->
-                </div>
+                <div id="admin-product-list"></div>
             </div>
 
-            <!-- Add Certificate Form -->
             <div class="dash-card">
                 <h3>Ajouter un Certificat</h3>
                 <form id="cert-form">
-                    <div class="dash-form-row">
-                        <label>Titre</label>
-                        <input type="text" id="c-name" required>
-                    </div>
-                    <div class="dash-form-row">
-                        <label>Description</label>
-                        <input type="text" id="c-desc" required>
-                    </div>
-                    <div class="dash-form-row">
-                        <label>Image</label>
-                        <input type="file" id="c-image" accept="image/*" required>
-                    </div>
+                    <div class="dash-form-row"><label>Titre</label><input type="text" id="c-name" required></div>
+                    <div class="dash-form-row"><label>Desc</label><input type="text" id="c-desc" required></div>
+                    <div class="dash-form-row"><label>Image</label><input type="file" id="c-image" accept="image/*" required></div>
                     <button type="submit" class="btn-dash-submit">Ajouter</button>
                 </form>
             </div>
-
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
     <script>
-        let editingProductId = null; // To track if we are editing
+        let editingProductId = null;
 
-        // --- 1. TOGGLE FUNCTION FOR PRICE INPUTS ---
         function togglePriceInputs() {
             const priceType = document.querySelector('input[name="price_type"]:checked').value;
             const varBlock = document.getElementById('price-variable-block');
             const directBlock = document.getElementById('price-direct-block');
-
-            if (priceType === 'variable') {
-                varBlock.style.display = 'grid';
-                directBlock.style.display = 'none';
-            } else {
-                varBlock.style.display = 'none';
-                directBlock.style.display = 'block';
-            }
+            if (priceType === 'variable') { varBlock.style.display = 'grid'; directBlock.style.display = 'none'; } 
+            else { varBlock.style.display = 'none'; directBlock.style.display = 'block'; }
         }
 
-        // --- 2. INITIALIZATION ---
         function initializeData() {
             if (!localStorage.getItem('products')) {
                 const defaultProducts = [
-                    { id: 1, name: 'Miel Standard', desc: 'Goût authentique.', prices: {'125g':'500 DA', '250g':'900 DA', '500g':'1700 DA'}, priceType: 'variable', category: 'cat1', image: 'https://placehold.co/300x200/222/D4AF37?text=Miel' },
-                    { id: 2, name: 'Pack Découverte', desc: 'Coffret 3 pots.', prices: {'Prix':'3500 DA'}, priceType: 'direct', category: 'cat2', image: 'https://placehold.co/300x200/222/D4AF37?text=Pack' }
+                    { id: 1, name: 'Miel Standard', desc: 'Goût authentique.', prices: {'125g':'500', '250g':'900', '500g':'1700'}, priceType: 'variable', category: 'cat1', image: 'https://placehold.co/300x200/222/D4AF37?text=Miel' }
                 ];
                 localStorage.setItem('products', JSON.stringify(defaultProducts));
             }
@@ -487,154 +417,76 @@
             }
         }
 
-        // --- 3. RENDER FUNCTIONS ---
-        
-        // Render Main Site Products
         function renderProducts() {
             const products = JSON.parse(localStorage.getItem('products')) || [];
             const containers = {
-                cat1: document.getElementById('cat1-list'),
-                cat2: document.getElementById('cat2-list'),
-                cat3: document.getElementById('cat3-list'),
-                cat4: document.getElementById('cat4-list')
+                cat1: document.getElementById('cat1-list'), cat2: document.getElementById('cat2-list'),
+                cat3: document.getElementById('cat3-list'), cat4: document.getElementById('cat4-list')
             };
-            
             Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
 
             products.forEach(p => {
                 let priceHTML = '';
-                
                 if (p.priceType === 'direct' || (Object.keys(p.prices).length === 1 && p.prices['Prix'])) {
                     const val = p.prices['Prix'] || Object.values(p.prices)[0];
-                    priceHTML = `<div class="price-single">${val}</div>`;
+                    priceHTML = `<div class="price-single">${val} DA</div>`;
                 } else {
-                    const options = Object.entries(p.prices).map(([w, pr]) => `<option value="${w}">${w} - ${pr}</option>`).join('');
+                    const options = Object.entries(p.prices).map(([w, pr]) => `<option value="${w}">${w} - ${pr} DA</option>`).join('');
                     priceHTML = `<select class="price-selector">${options}</select>`;
                 }
-
-                const card = `
-                    <div class="card">
-                        <div class="card-img" style="background-image: url('${p.image}');"></div>
-                        <h3>${p.name}</h3>
-                        <p class="card-desc">${p.desc}</p>
-                        <div class="price-container">${priceHTML}</div>
-                    </div>
-                `;
-                
-                if (containers[p.category]) {
-                    containers[p.category].innerHTML += card;
-                }
+                const card = `<div class="card"><div class="card-img" style="background-image: url('${p.image}');"></div><h3>${p.name}</h3><p class="card-desc">${p.desc}</p><div class="price-container">${priceHTML}</div></div>`;
+                if (containers[p.category]) containers[p.category].innerHTML += card;
             });
         }
 
-        // Render Admin Product List
         function renderAdminProductList() {
             const products = JSON.parse(localStorage.getItem('products')) || [];
             const listContainer = document.getElementById('admin-product-list');
             listContainer.innerHTML = '';
-
-            if(products.length === 0) {
-                listContainer.innerHTML = '<p style="color:#666; padding: 20px; text-align:center;">Aucun produit enregistré.</p>';
-                return;
-            }
+            if(products.length === 0) { listContainer.innerHTML = '<p style="color:#666; padding: 20px; text-align:center;">Aucun produit.</p>'; return; }
 
             products.forEach(p => {
-                const item = `
+                listContainer.innerHTML += `
                     <div class="admin-list-item">
-                        <span>${p.name} <small style="color:#666; margin-left:10px;">(${p.category})</small></span>
-                        <div class="admin-actions">
-                            <button class="btn-modify" onclick="editProduct(${p.id})">Modifier</button>
-                            <button class="btn-delete" onclick="deleteProduct(${p.id})">Supprimer</button>
+                        <div>
+                            <span>${p.name}</span><br>
+                            <small style="color:#666;">(${p.category})</small>
                         </div>
-                    </div>
-                `;
-                listContainer.innerHTML += item;
+                        <div class="admin-actions">
+                            <button class="btn-modify" onclick="editProduct(${p.id})">Modif</button>
+                            <button class="btn-delete" onclick="deleteProduct(${p.id})">Suppr</button>
+                        </div>
+                    </div>`;
             });
         }
 
-        // Render Certificates
         function renderCertificates() {
             const certs = JSON.parse(localStorage.getItem('certificates')) || [];
             const container = document.getElementById('cert-list');
+            if(!container) return;
             container.innerHTML = '';
-            certs.forEach(c => {
-                container.innerHTML += `
-                    <div class="cert-box">
-                        <img src="${c.image}" class="cert-img" alt="${c.name}">
-                        <h3 style="margin: 0; color: #000; font-size: 18px;">${c.name}</h3>
-                        <p style="color: #666; margin-top: 10px;">${c.desc}</p>
-                    </div>
-                `;
-            });
+            certs.forEach(c => { container.innerHTML += `<div class="cert-box"><img src="${c.image}" class="cert-img" alt="${c.name}"><h3 style="margin: 0; color: #000;">${c.name}</h3><p style="color: #666; margin-top: 10px;">${c.desc}</p></div>`; });
         }
-
-        // --- 4. IMAGE PROCESSING (RESIZE) ---
-        // This fixes the issue where storage gets full
-        function processImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800;
-                        const MAX_HEIGHT = 600;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // Return as JPEG with 70% quality to save space
-                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
-                    }
-                };
-            });
-        }
-
-        // --- 5. CRUD FUNCTIONS ---
 
         function deleteProduct(id) {
-            if(confirm('Voulez-vous vraiment supprimer ce produit ?')) {
+            if(confirm('Supprimer ce produit ?')) {
                 let products = JSON.parse(localStorage.getItem('products'));
                 products = products.filter(p => p.id !== id);
                 localStorage.setItem('products', JSON.stringify(products));
-                
-                renderProducts();
-                renderAdminProductList();
-                alert('Produit supprimé.');
+                renderProducts(); renderAdminProductList(); alert('Supprimé.');
             }
         }
 
         function editProduct(id) {
             const products = JSON.parse(localStorage.getItem('products'));
             const product = products.find(p => p.id === id);
-            
             if (!product) return;
-
             editingProductId = id;
-
-            // Fill form
+            
             document.getElementById('p-name').value = product.name;
             document.getElementById('p-desc').value = product.desc;
             document.getElementById('p-cat').value = product.category;
             
-            // Handle Price Type
             if (product.priceType === 'direct' || (Object.keys(product.prices).length === 1 && product.prices['Prix'])) {
                 document.querySelector('input[name="price_type"][value="direct"]').checked = true;
                 togglePriceInputs();
@@ -647,12 +499,9 @@
                 document.getElementById('p-price-500').value = product.prices['500g'] || '';
             }
 
-            // Change UI to Edit Mode
-            document.getElementById('form-title').innerText = "Modifier le Produit";
+            document.getElementById('form-title').innerText = "Modifier";
             document.getElementById('submit-btn').innerText = "Mettre à jour";
             document.getElementById('cancel-edit-btn').style.display = "block";
-            
-            // Scroll to form
             document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -662,11 +511,34 @@
             document.getElementById('form-title').innerText = "Ajouter un Produit";
             document.getElementById('submit-btn').innerText = "Ajouter";
             document.getElementById('cancel-edit-btn').style.display = "none";
-            togglePriceInputs(); // Reset radio buttons view
+            togglePriceInputs();
         }
 
-        // --- 6. HELPERS & EVENTS ---
-        
+        // Image Compression for Mobile
+        function processImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 600; // Smaller for mobile performance
+                        const MAX_HEIGHT = 450;
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+                        else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                        canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6)); // 60% quality
+                    }
+                };
+            });
+        }
+
         // Navigation
         document.getElementById('admin-btn').addEventListener('click', (e) => {
             e.preventDefault();
@@ -680,14 +552,12 @@
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('main-website').style.display = 'block';
             document.getElementById('main-header').style.display = 'flex';
-            renderProducts();
-            renderCertificates();
+            renderProducts(); renderCertificates();
         });
 
         // Add or Update Product
         document.getElementById('product-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const name = document.getElementById('p-name').value;
             const desc = document.getElementById('p-desc').value;
             const cat = document.getElementById('p-cat').value;
@@ -695,113 +565,46 @@
             const priceType = document.querySelector('input[name="price_type"]:checked').value;
 
             let prices = {};
-            if (priceType === 'variable') {
-                prices = {
-                    '125g': document.getElementById('p-price-125').value,
-                    '250g': document.getElementById('p-price-250').value,
-                    '500g': document.getElementById('p-price-500').value
-                };
-            } else {
-                prices = {
-                    'Prix': document.getElementById('p-price-direct').value
-                };
-            }
+            if (priceType === 'variable') prices = { '125g': document.getElementById('p-price-125').value, '250g': document.getElementById('p-price-250').value, '500g': document.getElementById('p-price-500').value };
+            else prices = { 'Prix': document.getElementById('p-price-direct').value };
 
             let products = JSON.parse(localStorage.getItem('products'));
 
-            // If editing
             if (editingProductId) {
                 const index = products.findIndex(p => p.id === editingProductId);
                 const oldProduct = products[index];
-
-                let imageData = oldProduct.image; // Keep old image by default
-                
-                if(imageFile) {
-                    try {
-                        imageData = await processImage(imageFile);
-                    } catch(err) {
-                        alert("Erreur lors du chargement de l'image.");
-                        return;
-                    }
-                }
-
-                products[index] = {
-                    id: editingProductId,
-                    name, desc, prices, priceType, category: cat, image: imageData
-                };
-
-                try {
-                    localStorage.setItem('products', JSON.stringify(products));
-                    alert('Produit mis à jour!');
-                } catch (e) {
-                    alert("Erreur: Stockage plein! L'image est peut-être trop grande même après réduction.");
-                    return;
-                }
-                
-                cancelEdit(); // Reset form
-            } 
-            // If adding new
-            else {
-                if(!imageFile) return alert("Choisir une image pour un nouveau produit");
-                
-                let imageData = '';
-                try {
-                    imageData = await processImage(imageFile);
-                } catch(err) {
-                    alert("Erreur lors du chargement de l'image.");
-                    return;
-                }
-
-                products.push({
-                    id: Date.now(),
-                    name, desc, prices, priceType, category: cat, image: imageData
-                });
-
-                try {
-                    localStorage.setItem('products', JSON.stringify(products));
-                    alert('Produit ajouté!');
-                } catch (e) {
-                    alert("Erreur: Stockage plein! Veuillez supprimer d'anciens produits ou utiliser une image plus légère.");
-                    return;
-                }
-                
-                this.reset();
-                togglePriceInputs();
+                let imageData = oldProduct.image;
+                if(imageFile) imageData = await processImage(imageFile);
+                products[index] = { id: editingProductId, name, desc, prices, priceType, category: cat, image: imageData };
+                try { localStorage.setItem('products', JSON.stringify(products)); alert('Mis à jour!'); } 
+                catch (e) { alert("Stockage plein!"); return; }
+                cancelEdit();
+            } else {
+                if(!imageFile) return alert("Image requise");
+                const imageData = await processImage(imageFile);
+                products.push({ id: Date.now(), name, desc, prices, priceType, category: cat, image: imageData });
+                try { localStorage.setItem('products', JSON.stringify(products)); alert('Ajouté!'); } 
+                catch (e) { alert("Stockage plein!"); return; }
+                this.reset(); togglePriceInputs();
             }
-
-            renderAdminProductList();
-            renderProducts();
+            renderAdminProductList(); renderProducts();
         });
 
-        // Add Certificate
+        // Certificate
         document.getElementById('cert-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('c-name').value;
             const desc = document.getElementById('c-desc').value;
             const imageFile = document.getElementById('c-image').files[0];
-            if(!imageFile) return alert("Choisir une image");
-            
-            // Use resize for certificate too
+            if(!imageFile) return;
             const imageData = await processImage(imageFile);
-            
             const certs = JSON.parse(localStorage.getItem('certificates'));
             certs.push({ id: Date.now(), name, desc, image: imageData });
-            
-            try {
-                localStorage.setItem('certificates', JSON.stringify(certs));
-                alert('Certificat ajouté!');
-                this.reset();
-            } catch(e) {
-                alert("Stockage plein!");
-            }
+            try { localStorage.setItem('certificates', JSON.stringify(certs)); alert('Certificat ajouté!'); this.reset(); } 
+            catch(e) { alert("Stockage plein!"); }
         });
 
-        // Init
-        window.onload = function() {
-            initializeData();
-            renderProducts();
-            renderCertificates();
-        };
+        window.onload = function() { initializeData(); renderProducts(); renderCertificates(); };
     </script>
 </body>
 </html>
