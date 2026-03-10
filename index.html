@@ -104,7 +104,6 @@
         .consultation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .info-box h4 { color: var(--gold); margin-bottom: 20px; font-size: 20px; text-transform: uppercase; }
         .info-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
-        .info-item strong { display: block; color: white; }
         
         .form-row { margin-bottom: 20px; }
         .form-row label { display: block; color: var(--gold); font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
@@ -164,6 +163,8 @@
         .admin-list-item:last-child { border-bottom: none; }
         .admin-list-item span { color: #ccc; font-size: 14px; }
         
+        /* Buttons in Admin List */
+        .admin-actions { display: flex; gap: 10px; }
         .btn-delete {
             background-color: #ff4d4d;
             color: white;
@@ -177,8 +178,36 @@
         }
         .btn-delete:hover { background-color: #cc0000; }
 
+        .btn-modify {
+            background-color: #4da6ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+        .btn-modify:hover { background-color: #0066cc; }
+
         .btn-dash-submit { background-color: var(--gold); color: var(--black); padding: 15px 40px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
         .btn-dash-submit:hover { background-color: var(--white); }
+        
+        /* Cancel Edit Button */
+        .btn-cancel-edit {
+            background-color: #333;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            display: none; /* Hidden by default */
+        }
 
         input[type="file"] { border: 2px dashed #444 !important; cursor: pointer; color: #ccc; }
         input[type="file"]::-webkit-file-upload-button { visibility: hidden; }
@@ -325,9 +354,9 @@
 
         <div class="dashboard-grid">
             
-            <!-- Add Product Form -->
+            <!-- Add/Edit Product Form -->
             <div class="dash-card">
-                <h3>Ajouter un Produit</h3>
+                <h3 id="form-title">Ajouter un Produit</h3>
                 <form id="product-form">
                     <div class="dash-form-row">
                         <label>Nom du Produit</label>
@@ -354,7 +383,7 @@
                         </div>
                     </div>
 
-                    <!-- Variable Price Inputs (Default Visible) -->
+                    <!-- Variable Price Inputs -->
                     <div id="price-variable-block" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                         <div>
                             <label>Prix (125g)</label>
@@ -370,7 +399,7 @@
                         </div>
                     </div>
 
-                    <!-- Direct Price Input (Hidden by default) -->
+                    <!-- Direct Price Input -->
                     <div id="price-direct-block" style="display:none; margin-bottom: 20px;">
                         <label>Prix Unique</label>
                         <input type="text" id="p-price-direct" placeholder="Ex: 1500 DA">
@@ -386,16 +415,17 @@
                         </select>
                     </div>
                     <div class="dash-form-row">
-                        <label>Image</label>
-                        <input type="file" id="p-image" accept="image/*" required>
+                        <label>Image (Laisser vide pour garder l'ancienne lors de modification)</label>
+                        <input type="file" id="p-image" accept="image/*">
                     </div>
-                    <button type="submit" class="btn-dash-submit">Ajouter</button>
+                    <button type="submit" class="btn-dash-submit" id="submit-btn">Ajouter</button>
+                    <button type="button" class="btn-cancel-edit" id="cancel-edit-btn" onclick="cancelEdit()">Annuler la modification</button>
                 </form>
             </div>
 
             <!-- Product List Management -->
             <div class="dash-card">
-                <h3>Liste des Produits (Supprimer)</h3>
+                <h3>Liste des Produits</h3>
                 <div id="admin-product-list">
                     <!-- Dynamic list will appear here -->
                 </div>
@@ -426,6 +456,8 @@
 
     <!-- JavaScript Logic -->
     <script>
+        let editingProductId = null; // To track if we are editing
+
         // --- 1. TOGGLE FUNCTION FOR PRICE INPUTS ---
         function togglePriceInputs() {
             const priceType = document.querySelector('input[name="price_type"]:checked').value;
@@ -467,21 +499,15 @@
                 cat4: document.getElementById('cat4-list')
             };
             
-            // Clear containers - FIXED SYNTAX ERROR
-            Object.values(containers).forEach(c => {
-                if(c) c.innerHTML = '';
-            });
+            Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
 
             products.forEach(p => {
                 let priceHTML = '';
                 
-                // Check if variable or direct
                 if (p.priceType === 'direct' || (Object.keys(p.prices).length === 1 && p.prices['Prix'])) {
-                    // Direct Price Display
                     const val = p.prices['Prix'] || Object.values(p.prices)[0];
                     priceHTML = `<div class="price-single">${val}</div>`;
                 } else {
-                    // Variable Price Dropdown
                     const options = Object.entries(p.prices).map(([w, pr]) => `<option value="${w}">${w} - ${pr}</option>`).join('');
                     priceHTML = `<select class="price-selector">${options}</select>`;
                 }
@@ -516,7 +542,10 @@
                 const item = `
                     <div class="admin-list-item">
                         <span>${p.name} <small style="color:#666; margin-left:10px;">(${p.category})</small></span>
-                        <button class="btn-delete" onclick="deleteProduct(${p.id})">Supprimer</button>
+                        <div class="admin-actions">
+                            <button class="btn-modify" onclick="editProduct(${p.id})">Modifier</button>
+                            <button class="btn-delete" onclick="deleteProduct(${p.id})">Supprimer</button>
+                        </div>
                     </div>
                 `;
                 listContainer.innerHTML += item;
@@ -539,7 +568,47 @@
             });
         }
 
-        // --- 4. DELETE FUNCTION ---
+        // --- 4. IMAGE PROCESSING (RESIZE) ---
+        // This fixes the issue where storage gets full
+        function processImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 600;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Return as JPEG with 70% quality to save space
+                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    }
+                };
+            });
+        }
+
+        // --- 5. CRUD FUNCTIONS ---
+
         function deleteProduct(id) {
             if(confirm('Voulez-vous vraiment supprimer ce produit ?')) {
                 let products = JSON.parse(localStorage.getItem('products'));
@@ -552,23 +621,59 @@
             }
         }
 
-        // --- 5. HELPERS & EVENTS ---
-        function getBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
+        function editProduct(id) {
+            const products = JSON.parse(localStorage.getItem('products'));
+            const product = products.find(p => p.id === id);
+            
+            if (!product) return;
+
+            editingProductId = id;
+
+            // Fill form
+            document.getElementById('p-name').value = product.name;
+            document.getElementById('p-desc').value = product.desc;
+            document.getElementById('p-cat').value = product.category;
+            
+            // Handle Price Type
+            if (product.priceType === 'direct' || (Object.keys(product.prices).length === 1 && product.prices['Prix'])) {
+                document.querySelector('input[name="price_type"][value="direct"]').checked = true;
+                togglePriceInputs();
+                document.getElementById('p-price-direct').value = product.prices['Prix'] || Object.values(product.prices)[0];
+            } else {
+                document.querySelector('input[name="price_type"][value="variable"]').checked = true;
+                togglePriceInputs();
+                document.getElementById('p-price-125').value = product.prices['125g'] || '';
+                document.getElementById('p-price-250').value = product.prices['250g'] || '';
+                document.getElementById('p-price-500').value = product.prices['500g'] || '';
+            }
+
+            // Change UI to Edit Mode
+            document.getElementById('form-title').innerText = "Modifier le Produit";
+            document.getElementById('submit-btn').innerText = "Mettre à jour";
+            document.getElementById('cancel-edit-btn').style.display = "block";
+            
+            // Scroll to form
+            document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
         }
 
+        function cancelEdit() {
+            editingProductId = null;
+            document.getElementById('product-form').reset();
+            document.getElementById('form-title').innerText = "Ajouter un Produit";
+            document.getElementById('submit-btn').innerText = "Ajouter";
+            document.getElementById('cancel-edit-btn').style.display = "none";
+            togglePriceInputs(); // Reset radio buttons view
+        }
+
+        // --- 6. HELPERS & EVENTS ---
+        
         // Navigation
         document.getElementById('admin-btn').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('main-website').style.display = 'none';
             document.getElementById('admin-dashboard').style.display = 'block';
             document.getElementById('main-header').style.display = 'none';
-            renderAdminProductList(); // Load list when opening admin
+            renderAdminProductList(); 
         });
 
         document.getElementById('back-to-site').addEventListener('click', () => {
@@ -579,17 +684,15 @@
             renderCertificates();
         });
 
-        // Add Product
+        // Add or Update Product
         document.getElementById('product-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const name = document.getElementById('p-name').value;
             const desc = document.getElementById('p-desc').value;
             const cat = document.getElementById('p-cat').value;
             const imageFile = document.getElementById('p-image').files[0];
             const priceType = document.querySelector('input[name="price_type"]:checked').value;
-
-            if(!imageFile) return alert("Choisir une image");
-            const imageData = await getBase64(imageFile);
 
             let prices = {};
             if (priceType === 'variable') {
@@ -604,17 +707,70 @@
                 };
             }
 
-            const products = JSON.parse(localStorage.getItem('products'));
-            products.push({
-                id: Date.now(),
-                name, desc, prices, priceType, category: cat, image: imageData
-            });
-            localStorage.setItem('products', JSON.stringify(products));
-            
-            alert('Produit ajouté!');
-            this.reset();
-            togglePriceInputs(); 
-            renderAdminProductList(); 
+            let products = JSON.parse(localStorage.getItem('products'));
+
+            // If editing
+            if (editingProductId) {
+                const index = products.findIndex(p => p.id === editingProductId);
+                const oldProduct = products[index];
+
+                let imageData = oldProduct.image; // Keep old image by default
+                
+                if(imageFile) {
+                    try {
+                        imageData = await processImage(imageFile);
+                    } catch(err) {
+                        alert("Erreur lors du chargement de l'image.");
+                        return;
+                    }
+                }
+
+                products[index] = {
+                    id: editingProductId,
+                    name, desc, prices, priceType, category: cat, image: imageData
+                };
+
+                try {
+                    localStorage.setItem('products', JSON.stringify(products));
+                    alert('Produit mis à jour!');
+                } catch (e) {
+                    alert("Erreur: Stockage plein! L'image est peut-être trop grande même après réduction.");
+                    return;
+                }
+                
+                cancelEdit(); // Reset form
+            } 
+            // If adding new
+            else {
+                if(!imageFile) return alert("Choisir une image pour un nouveau produit");
+                
+                let imageData = '';
+                try {
+                    imageData = await processImage(imageFile);
+                } catch(err) {
+                    alert("Erreur lors du chargement de l'image.");
+                    return;
+                }
+
+                products.push({
+                    id: Date.now(),
+                    name, desc, prices, priceType, category: cat, image: imageData
+                });
+
+                try {
+                    localStorage.setItem('products', JSON.stringify(products));
+                    alert('Produit ajouté!');
+                } catch (e) {
+                    alert("Erreur: Stockage plein! Veuillez supprimer d'anciens produits ou utiliser une image plus légère.");
+                    return;
+                }
+                
+                this.reset();
+                togglePriceInputs();
+            }
+
+            renderAdminProductList();
+            renderProducts();
         });
 
         // Add Certificate
@@ -624,12 +780,20 @@
             const desc = document.getElementById('c-desc').value;
             const imageFile = document.getElementById('c-image').files[0];
             if(!imageFile) return alert("Choisir une image");
-            const imageData = await getBase64(imageFile);
+            
+            // Use resize for certificate too
+            const imageData = await processImage(imageFile);
+            
             const certs = JSON.parse(localStorage.getItem('certificates'));
             certs.push({ id: Date.now(), name, desc, image: imageData });
-            localStorage.setItem('certificates', JSON.stringify(certs));
-            alert('Certificat ajouté!');
-            this.reset();
+            
+            try {
+                localStorage.setItem('certificates', JSON.stringify(certs));
+                alert('Certificat ajouté!');
+                this.reset();
+            } catch(e) {
+                alert("Stockage plein!");
+            }
         });
 
         // Init
