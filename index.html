@@ -281,6 +281,23 @@
                     </div>
                 </div>
 
+                 <!-- This product has only one price -->
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/05/IMG20240526234535.jpg');"></div>
+                    <h3>باقةالحيوية</h3>
+                    <p class="card-desc">هل تبحثون عن التميز في الحياة، و الحفاظ على طاقتكم على أعلى مستوى، الحيوية و الرفاهية الصحية؟ تعال نستكشف هذا العرض الفخم و جربوا هذا العرض الفخم</p>
+                    <div class="price-container">
+                        <!-- Single Price Display -->
+                        <div class="price-single">8900 DA</div>
+                    </div>
+                    <!-- Button calls simple buyNow function -->
+                    <div class="btn-actions">
+                        <button class="btn-buy" onclick="buyNow('باقةالحيوية', '8900 DA')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart('باقةالحيوية')">Panier</button>
+                    </div>
+                </div>
+        
+
                 <!-- EXAMPLE 2: VARIABLE PRICE PRODUCT (125g, 250g, 500g) -->
                 <!-- This product has multiple weights -->
                 <div class="card">
@@ -305,25 +322,32 @@
                  <!-- EXAMPLE 2: VARIABLE PRICE PRODUCT (125g, 250g, 500g) -->
                 <!-- This product has multiple weights -->
                 <div class="card">
-                    <div class="card-img" style="background-image: url('https://placehold.co/300x200/222/D4AF37?text=Miel+Naturel');"></div>
-                    <h3>Miel Naturel Pur</h3>
-                    <p class="card-desc">Miel récolté traditionnellement. Choisissez le poids.</p>
+                    <div class="card-img" style="background-image: url('https://larucheslimi.com/wp-content/uploads/2024/06/pollen-125--scaled-e1738589051179.jpg');"></div>
+                    <h3>حبوب اللقاح (الطلع)</h3>
+                    <p class="card-desc">حبوب اللقاح هي غذاء فائق طبيعي، غني بالبروتينات والفيتامينات والمعادن، مثالي لزيادة طاقتك وتعزيز جهازك المناعي. بفضل خصائصه المضادة للالتهابات ومضادات الأكسدة.</p>
                     <div class="price-container">
                         <!-- Dropdown Selector -->
                         <select class="price-selector">
-                            <option value="125g - 500 DA">125g - 500 DA</option>
-                            <option value="250g - 900 DA">250g - 900 DA</option>
-                            <option value="500g - 1700 DA">500g - 1700 DA</option>
+                            <option value="125g - 500 DA">125g - 700 DA</option>
+                            <option value="250g - 900 DA">250g - 1300 DA</option>
+                            
                         </select>
                     </div>
+                    
                     <!-- Button calls buyNowVariable function. 'this' passes the button element to find the selected dropdown -->
                     <div class="btn-actions">
-                        <button class="btn-buy" onclick="buyNowVariable(this, 'Miel Naturel Pur')">Acheter</button>
-                        <button class="btn-cart" onclick="addToCart('Miel Naturel Pur')">Panier</button>
+                        <button class="btn-buy" onclick="buyNowVariable(this, 'حبوب اللقاح (الطلع)')">Acheter</button>
+                        <button class="btn-cart" onclick="addToCart('حبوب اللقاح (الطلع)')">Panier</button>
                     </div>
                 </div>
 
             </div>
+
+            
+
+            </div>
+
+    <!--THE END-->
             <!-- ====================================================== -->
             <!-- CAUTION: ADD YOUR MANUAL PRODUCTS HERE (END)           -->
             <!-- ====================================================== -->
